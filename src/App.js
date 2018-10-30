@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import CoursesPage from './CoursesPage';
+import CoursePage from './CoursePage';
+import {Header, Container, Main, Footer} from "./Elements";
+import AdminCoursesPage from "./AdminCoursesPage";
+import AdminCoursePage from "./AdminCoursePage";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+          <Container>
+              <Header/>
+              <Main>
+        <Switch>
+          <Route exact path="/" component={CoursesPage}/>
+            <Route path="/courses/:courseID/:videoID?" component={CoursePage}/>
+            <Route path="/admin" exact component={AdminCoursesPage} />
+            <Route path="/admin/:courseID/:videoID?" component={AdminCoursePage} />
+        </Switch>
+              </Main>
+              <Footer/>
+          </Container>
+      </Router>
     );
   }
 }
