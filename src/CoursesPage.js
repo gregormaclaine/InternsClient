@@ -9,7 +9,8 @@ const Course = styled(Link)`
     text-decoration: none;
     cursor: pointer;
     color: #333;
-    padding: 2px 16px;                          
+    padding: 2px 16px;
+    margin: 5px;                          
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         transition-duration: 0.3s;
         &:hover{
@@ -19,7 +20,8 @@ const Course = styled(Link)`
 
 const CoursesWrapper = styled.div`
     display: grid;
-    grid-auto-columns: 200px;
+        grid-auto-columns: 200px;
+        grid-auto-flow: column;
 `;
 
 const CourseTitle = styled.h3`
