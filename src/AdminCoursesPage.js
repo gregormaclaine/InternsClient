@@ -71,25 +71,6 @@ export default class AdminCoursesPage extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.refreshCourses();
-    }
-
-    refreshCourses = () => {
-        this.setState({...this.state, loading: true});
-        axios.get("http://api.wellycompsci.org.uk/interns/").then(({data}) => {
-            this.setState({...this.state, courses: data, loading: false});
-        }).catch(error => this.setState({...this.state, error, loading: false}));
-    }
-    newCourse = (e) => {
-        e.preventDefault();
-        this.setState({...this.state, loading: true});
-        axios.post("http://api.wellycompsci.org.uk/interns/", this.state.newCourse).then(({data}) => {
-            this.setState({...this.state, courses: data, loading: false});
-            this.refreshCourses();
-        }).catch(error => this.setState({...this.state, error, loading: false}));
-    }
-
     render() {
         return (
             <div>

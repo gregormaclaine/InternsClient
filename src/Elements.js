@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, {keyframes} from 'styled-components';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
+import {Toggle} from 'react-powerplug';
 
 const anim1 = keyframes`
   0% {
@@ -78,22 +79,27 @@ const LoaderWrapper = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     background-color: #ccc;
     flex-grow: 0;
+    flex-wrap: wrap;
 `;
 
 const Title = styled(Link)`
     background-color: #333;
     text-decoration: none;
+    height: 100%;
     padding: 10px 20px 7px 20px;
       font-family: Rockwell, "Courier Bold", "Courier", "Georgia", Times, "Times New Roman", serif;
       font-weight: bold;
       font-size: 2rem;
       color: white;
+      @media only screen and (max-width: 880px) {
+        flex-grow: 1;
+      }
+      text-align: center;
     & span:nth-of-type(1){
         color: #f49712;
     }
@@ -108,6 +114,39 @@ const Title = styled(Link)`
 const Content = styled.div`
     padding: 10px;
     font-size: 1.5rem;
+    flex-grow: 1;
+    @media only screen and (max-width: 880px) {
+        text-align: center;
+    }
+`;
+
+const Nav = styled.nav`
+    margin-right: 5px;
+    .active{
+      background-color: #333;
+      color: white;
+    }
+    a{
+    text-decoration: none;
+    text-align: center;
+    padding: 10px 16px;
+    height: 100%;
+    &:hover{
+      background-color: #333;
+      color: white;
+    }
+  }
+      display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: stretch;
+    @media only screen and (max-width: 880px) {
+    flex-grow: 1;
+    margin: 0;
+    a{
+      flex-grow: 1;
+    }
+  }
 `;
 
 export const Loader = (props) => (
@@ -118,14 +157,18 @@ export const Loader = (props) => (
     </LoaderWrapper>
 );
 
-export const Header = (props) => (
+export const Header = ({admin}) => (
     <HeaderWrapper>
         <Title to="/">
-        <span>Welly</span><span>Comp</span><span>Sci</span>
+            <span>Welly</span><span>Comp</span><span>Sci</span>
         </Title>
         <Content>
-        <b>Interns Programme</b> Training Portal
+            <b>Internship Programme</b> Training Portal {admin && <strong>ADMIN</strong>}
         </Content>
+        <Nav>
+            <NavLink to="/" exact>Home</NavLink>
+            <NavLink to="/courses">Courses</NavLink>
+        </Nav>
     </HeaderWrapper>
 
 );
@@ -137,14 +180,20 @@ const FooterWrapper = styled.footer`
     padding: 10px;
 `;
 
-export const Footer = (props) => (
-    <FooterWrapper>
-        <span>WellyCompSci is a student project. Examples might be simplified for high school level learning. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. While using this site, you agree to have read and accepted our terms of use, cookie and privacy policy. Copyright 2017-2017. All Rights Reserved. Powered by Mann Power.</span>
-    </FooterWrapper>
+export const Footer = ({onChangeAdmin}) => (
+    <Toggle>
+        {({on, toggle}) =>
+            <FooterWrapper>
+                <span>WellyCompSci is a student project. Examples might be simplified for high school level learning. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. While using this site, you agree to have read and accepted our terms of use, cookie and privacy policy. Copyright 2017-2018. All Rights Reserved. Powered by Mann Power.</span>
+                <span onClick={toggle} style={{cursor: 'pointer'}}> Edit</span>
+                {on && <input onChange={onChangeAdmin} style={{fontSize: '0.5rem', marginLeft: 5}} />}
+            </FooterWrapper>
+        }
+    </Toggle>
 )
 
 export const Main = styled.main`
-    max-width: 1024px;
+    max-width: 960px;
     margin: auto;
     flex-grow: 1;   
 `;

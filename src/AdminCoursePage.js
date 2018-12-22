@@ -17,7 +17,6 @@ const Video = styled.div`
 `;
 
 const NewVideos = styled.div`
-
     text-decoration: none;
     cursor: pointer;
     color: #333;
@@ -66,7 +65,7 @@ const FlexContainer = styled.div`
     justify-content: stretch;
 `;
 
-export default class AdminCoursePage extends React.Component{
+export default class AdminCoursePage extends React.Component {
     state = {
         course: {},
         error: null,
@@ -104,7 +103,7 @@ export default class AdminCoursePage extends React.Component{
         e.preventDefault();
         this.setState({...this.state, loading: true});
         axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${this.state.newVideo}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&part=snippet`).then(({data}) => {
-            if(data.items.length > 0) {
+            if (data.items.length > 0) {
                 var title = data.items[0].snippet.title;
                 var description = data.items[0].snippet.description;
                 var youtubeID = data.items[0].id;
@@ -118,7 +117,8 @@ export default class AdminCoursePage extends React.Component{
             }
         }).catch(error => this.setState({...this.state, error, loading: false}));
     }
-    componentWillReceiveProps(){
+
+    componentWillReceiveProps() {
         this.reFetch();
     }
 
@@ -126,7 +126,7 @@ export default class AdminCoursePage extends React.Component{
         e.preventDefault();
         this.setState({...this.state, loading: true});
         axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${this.state.newPlaylist}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`).then(async ({data}) => {
-            if(data.items.length > 0) {
+            if (data.items.length > 0) {
                 await Promise.all(data.items.map(async (video) => {
                     var title = video.snippet.title;
                     var description = video.snippet.description;
@@ -181,47 +181,61 @@ export default class AdminCoursePage extends React.Component{
             <div>
                 {this.props.loading ? <Loader/> : <div>
                     <Toggle>{({on, toggle}) => !on ? <React.Fragment><h1>{this.state.course.title}</h1>
-                        <p>{this.state.course.description}</p><Button onClick={toggle}><i className="fas fa-edit"></i></Button></React.Fragment> : <form onSubmit={e => {e.preventDefault(); toggle(); this.updateCourse()}}>
-                        <input onChange={e => this.setState({...this.state, newCourse: {...this.state.newCourse, title: e.target.value}})} placeholder="Title" value={this.state.newCourse.title}/>
-                        <textarea onChange={e => this.setState({...this.state, newCourse: {...this.state.newCourse, description: e.target.value}})} placeholder="Description" value={this.state.newCourse.description}/>
+                        <p>{this.state.course.description}</p><Button onClick={toggle}><i
+                            className="fas fa-edit"></i></Button></React.Fragment> : <form onSubmit={e => {
+                        e.preventDefault();
+                        toggle();
+                        this.updateCourse()
+                    }}>
+                        <input onChange={e => this.setState({
+                            ...this.state,
+                            newCourse: {...this.state.newCourse, title: e.target.value}
+                        })} placeholder="Title" value={this.state.newCourse.title}/>
+                        <textarea onChange={e => this.setState({
+                            ...this.state,
+                            newCourse: {...this.state.newCourse, description: e.target.value}
+                        })} placeholder="Description" value={this.state.newCourse.description}/>
                         <Button type="submit">Submit</Button>
                     </form>}</Toggle>
                     <FlexContainer>
-                    {(this.props.match.params.videoID && this.state.video) &&
-                    <Video><YouTube videoId={this.state.video.youtubeID}/>
-                        <h3>{this.state.video.title}</h3>
-                        <div dangerouslySetInnerHTML={{__html: this.state.video.description}}/>
-                    </Video>}
-                    <List>
-                        {this.state.course.videos ? this.state.course.videos.map((video) => <li><VideoLink activeStyle={{fontWeight: 'bold'}}
-                            to={`/admin/${this.props.match.params.courseID}/${video._id}`}>{video.title}</VideoLink><Button
-                            onClick={() => this.updateVideo(video)}><i
-                            className="fas fa-sync"></i></Button><Toggle>{({on, toggle}) => on ?
-                            <React.Fragment><Button onClick={() => this.deleteVideo(video)} red><i className="fas fa-trash-alt"></i></Button><Button
-                                onClick={toggle}><i
-                                className="fas fa-times"></i></Button></React.Fragment> :
-                            <Button onClick={toggle} red><i className="fas fa-trash-alt"></i></Button>}</Toggle> </li>) : null}
-                            </List>
+                        {(this.props.match.params.videoID && this.state.video) &&
+                        <Video><YouTube videoId={this.state.video.youtubeID}/>
+                            <h3>{this.state.video.title}</h3>
+                            <div dangerouslySetInnerHTML={{__html: this.state.video.description}}/>
+                        </Video>}
+                        <List>
+                            {this.state.course.videos ? this.state.course.videos.map((video) => <li><VideoLink
+                                activeStyle={{fontWeight: 'bold'}}
+                                to={`/admin/${this.props.match.params.courseID}/${video._id}`}>{video.title}</VideoLink><Button
+                                onClick={() => this.updateVideo(video)}><i
+                                className="fas fa-sync"></i></Button><Toggle>{({on, toggle}) => on ?
+                                <React.Fragment><Button onClick={() => this.deleteVideo(video)} red><i
+                                    className="fas fa-trash-alt"></i></Button><Button
+                                    onClick={toggle}><i
+                                    className="fas fa-times"></i></Button></React.Fragment> :
+                                <Button onClick={toggle} red><i className="fas fa-trash-alt"></i></Button>}</Toggle>
+                            </li>) : null}
+                        </List>
                     </FlexContainer>
                     <NewVideos>
-                    <form onSubmit={this.newVideo}>
-                        <input placeholder="YouTube Video ID" onChange={(e) => this.setState({
-                            ...this.state,
-                            newVideo: e.target.value
-                        })} value={this.state.newVideo}/>
-                        <Button type="submit">Submit</Button>
-                    </form>
-                    <form onSubmit={this.newPlaylist}>
-                        <input placeholder="YouTube Playlist ID" onChange={(e) => this.setState({
-                            ...this.state,
-                            newPlaylist: e.target.value
-                        })} value={this.state.newPlaylist}/>
-                        <Button type="submit">Submit</Button>
-                    </form>
+                        <form onSubmit={this.newVideo}>
+                            <input placeholder="YouTube Video ID" onChange={(e) => this.setState({
+                                ...this.state,
+                                newVideo: e.target.value
+                            })} value={this.state.newVideo}/>
+                            <Button type="submit">Submit</Button>
+                        </form>
+                        <form onSubmit={this.newPlaylist}>
+                            <input placeholder="YouTube Playlist ID" onChange={(e) => this.setState({
+                                ...this.state,
+                                newPlaylist: e.target.value
+                            })} value={this.state.newPlaylist}/>
+                            <Button type="submit">Submit</Button>
+                        </form>
                     </NewVideos>
-                            </div>
-                        }
-                        </div>
-                            );
-                            }
-                            }
+                </div>
+                }
+            </div>
+        );
+    }
+}

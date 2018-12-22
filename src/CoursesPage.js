@@ -1,57 +1,105 @@
 import React from 'react';
-import axios from 'axios';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import {Loader} from "./Elements";
+import {CourseContext} from "./App";
+import NewCourse from "./NewCourse";
 
 
 const Course = styled(Link)`
     text-decoration: none;
     cursor: pointer;
-    color: #333;
-    padding: 2px 16px;
-    margin: 5px;                          
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-        transition-duration: 0.3s;
-        &:hover{
-                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    color: white;
+    background-color: ${({level}) => {
+        switch (level) {
+            case 'green':
+                return '#2ecc71';
+            case 'blue':
+                return '#3498db';
+            case 'black':
+                return '#e74c3c';
         }
+    }};
+    padding: 2px 16px;
+    text-align: center;
 `;
 
 const CoursesWrapper = styled.div`
     display: grid;
-        grid-auto-columns: 200px;
-        grid-auto-flow: column;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(186px, 1fr));
 `;
 
 const CourseTitle = styled.h3`
-
+    color: white;
 `;
 
-const CourseDescription = styled.p`
-
-`;
-
-export default class CoursesPage extends React.Component{
-    state = {
-        courses: [],
-        error: null,
-        loading: false
-    }
-    componentDidMount(){
-        this.setState({...this.state, loading: true});
-        axios.get("http://api.wellycompsci.org.uk/interns/").then(({data}) => {
-            this.setState({...this.state, courses: data, loading: false});
-        }).catch(error => this.setState({...this.state, error, loading: false}));
-    }
-    render(){
-        return (
-            <div>
-                <h1>Welcome to the new Intern Programme Training Portal</h1>
-                <p>We hope you'll have an amazing experience learning, through our videos created just for you. We have written a bespoke programme, with the right skills for our programmers here at WellyCompSci. Go ahead and click the link of the courses below.</p>
-                <p><i>Will &amp; Arjun</i></p>
-                {this.state.loading ? <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/></div> : <CoursesWrapper>{this.state.courses.map((course) => <Course to={'/courses/' + course._id}><CourseTitle>{course.title}</CourseTitle><CourseDescription>{course.description}</CourseDescription></Course>)}</CoursesWrapper>}
-            </div>
-        );
+class CoursesPage extends React.Component {
+    render() {
+        return (<CourseContext.Consumer>
+            {context => {
+                var green = [], blue = [], black = [];
+                context.courses.forEach((course) => {
+                    switch (course.level) {
+                        case 'intern':
+                            green.push(course);
+                            break;
+                        case 'junior':
+                            blue.push(course);
+                            break;
+                        case 'senior':
+                            black.push(course);
+                            break;
+                    }
+                });
+                return (
+                    <React.Fragment>
+                        <h1>Courses</h1>
+                        <h2>Interns</h2>
+                        <p>Interns, please follow these courses if you would like to join WellyCompSci as a Junior
+                            Programmer.</p>
+                        {context.loading ?
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/>
+                            </div> :
+                            <CoursesWrapper>{context.courses.map((course) => (
+                                <Course level='green'
+                                        to={'/courses/' + course.slug}>
+                                    <i className={`${course.icon} fa-4x`}></i>
+                                    <CourseTitle>{course.title}</CourseTitle>
+                                    <i>{course.videos.length} {course.videos.length === 1 ? 'video' : 'videos'}</i>
+                                </Course>))}</CoursesWrapper>}
+                        <h2>Junior Programmers</h2>
+                        <p>Employees, feel free to follow these courses at your own pace, if you would like to delve
+                            deeper into our world of programming and become a Senior Programmer.</p>
+                        {context.loading ?
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/>
+                            </div> :
+                            <CoursesWrapper>{blue.map((course) => (
+                                <Course level='blue'
+                                        to={'/courses/' + course.slug}>
+                                    <i className={`${course.icon} fa-4x`}></i>
+                                    <CourseTitle>{course.title}</CourseTitle>
+                                    <i>{course.videos.length} {course.videos.length === 1 ? 'video' : 'videos'}</i>
+                                </Course>))}</CoursesWrapper>}
+                        <h2>Senior Programmers</h2>
+                        <p>If you feel that you are brave enough, please try delve into these courses to put yourselves
+                            ahead of the groups.</p>
+                        {context.loading ?
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/>
+                            </div> :
+                            <CoursesWrapper>{black.map((course) => (
+                                <Course level='black'
+                                        to={'/courses/' + course.slug}>
+                                    <i className={`${course.icon} fa-4x`}></i>
+                                    <CourseTitle>{course.title}</CourseTitle>
+                                    <i>{course.videos.length} {course.videos.length === 1 ? 'video' : 'videos'}</i>
+                                </Course>))}</CoursesWrapper>}
+                        {!context.loading && context.admin && <NewCourse onSubmit={context.refetchCourses}/>}
+                    </React.Fragment>
+                );
+            }}
+        </CourseContext.Consumer>);
     }
 }
+
+export default CoursesPage;
