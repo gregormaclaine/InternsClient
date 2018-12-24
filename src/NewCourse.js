@@ -54,32 +54,52 @@ export default class NewCourse extends React.Component {
     state = {
         level: 'intern'
     }
+
     newCourse = async (e) => {
         e.preventDefault();
         try {
-            var {data: idData} = await axios.post("http://api.wellycompsci.org.uk/interns/", {
-                title: this.title.value,
-                icon: this.icon.value,
-                level: this.level.value,
-                description: this.description.value,
-                youtubeID: this.playlistID.value
-            });
-            var {_id} = idData;
-            var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${this.playlistID.value}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
-            if (data.items.length > 0) {
-                await Promise.all(data.items.map(async (video) => {
-                    var title = video.snippet.title;
-                    var description = video.snippet.description;
-                    var youtubeID = video.snippet.resourceId.videoId;
-                    var $position = video.snippet.position;
-                    await axios.post("http://api.wellycompsci.org.uk/interns/" + _id + '/new-video', {
-                        title,
-                        description,
-                        youtubeID,
-                        $position
-                    });
-                }));
+            var _id;
+            if(this.props.editCourse){
+                _id = this.props.editCourse._id;
+                await axios.post("http://api.wellycompsci.org.uk/interns/" + _id, {
+                    title: this.title.value,
+                    icon: this.icon.value,
+                    level: this.level.value,
+                    description: this.description.value,
+                    youtubeID: this.playlistID.value,
+                    position: this.props.editCourse.position,
+                });
+            } else {
+                var {data: idData} = await axios.post("http://api.wellycompsci.org.uk/interns/", {
+                    title: this.title.value,
+                    icon: this.icon.value,
+                    level: this.level.value,
+                    description: this.description.value,
+                    youtubeID: this.playlistID.value,
+                    position: this.props.length
+                });
+                _id = idData._id;
             }
+                if (this.props.editCourse) {
+                    await Promise.all(this.props.editCourse.videos.map(async (video) => {
+                        return await axios.delete(`http://api.wellycompsci.org.uk/interns/${_id}/${video._id}`);
+                    }));
+                }
+                var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${this.playlistID.value}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
+                if (data.items.length > 0) {
+                    await Promise.all(data.items.map(async (video) => {
+                        var title = video.snippet.title;
+                        var description = video.snippet.description;
+                        var youtubeID = video.snippet.resourceId.videoId;
+                        var $position = video.snippet.position;
+                        await axios.post("http://api.wellycompsci.org.uk/interns/" + _id + '/new-video', {
+                            title,
+                            description,
+                            youtubeID,
+                            $position
+                        });
+                    }));
+                }
             this.props.onSubmit();
         }
         catch (e) {
@@ -90,17 +110,17 @@ export default class NewCourse extends React.Component {
     render() {
         return (
             <Form onSubmit={this.newCourse} level={this.state.level}>
-                <h3>New Course</h3>
+                <h3>{this.props.editCourse ? 'Edit Course' : 'New Course'}</h3>
                 <Select placeholder="Level" ref={ref => this.level = ref}
-                        onChange={e => this.setState({level: e.target.value})}>
+                        defaultValue={this.props.editCourse ? this.props.editCourse.level : ''} onChange={e => this.setState({level: e.target.value})}>
                     <option value="intern">Intern</option>
                     <option value="junior">Junior Programmer</option>
                     <option value="senior">Senior Programmer</option>
                 </Select>
-                <Input ref={ref => this.icon = ref} placeholder="Icon"/>
-                <Input ref={ref => this.title = ref} placeholder="Title"/>
-                <TextArea placeholder="Description" ref={ref => this.description = ref}/>
-                <Input ref={ref => this.playlistID = ref} placeholder="Playlist ID"/>
+                <Input defaultValue={this.props.editCourse ? this.props.editCourse.icon : ''} ref={ref => this.icon = ref} placeholder="Icon"/>
+                <Input defaultValue={this.props.editCourse ? this.props.editCourse.title : ''} ref={ref => this.title = ref} placeholder="Title"/>
+                <TextArea defaultValue={this.props.editCourse ? this.props.editCourse.description : ''} placeholder="Description" ref={ref => this.description = ref}/>
+                <Input defaultValue={this.props.editCourse ? this.props.editCourse.youtubeID : ''} ref={ref => this.playlistID = ref} placeholder="Playlist ID"/>
                 <Button type="submit">Submit</Button>
             </Form>
         );

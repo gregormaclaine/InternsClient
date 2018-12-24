@@ -1,9 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
 import YouTube from 'react-youtube';
-import {NavLink} from 'react-router-dom';
+import {NavLink, Link} from 'react-router-dom';
 import {CourseContext} from './App';
 import {Loader} from "./Elements";
+import {Toggle} from 'react-powerplug';
+import axios from "axios";
+
+const Flex = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+    margin: 0 5px;
+`;
+const Icon = styled.i`
+    padding: 10px;
+    background-color: ${({edit}) => edit ? '#4cd137' : '#e84118'};
+    color: white;
+    &:hover{
+        background-color: ${({edit}) => edit ? '#44bd32' : '#c23616'}
+    }  
+    ${({disabled}) => disabled ? 'pointer-events: none; background-color: gray;' : ''}
+`;
 
 const VideoLink = styled(NavLink)`
     text-decoration: none;
@@ -40,7 +59,77 @@ const FlexContainer = styled.div`
     flex-wrap: wrap;
 `;
 
+
+const Input = styled.input`
+      vertical-align: middle;
+      margin: 5px 10px 5px 0;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+`;
+
+const Form = styled.form`
+    color: white;
+    padding: 16px 20px;
+    margin: 8px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    width: 100%;
+    @media (max-width: 768px){
+        flex-direction: column;
+        align-items: stretch;
+    }
+`;
+
+const Button = styled.button`
+    background-color: #2eec71;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 16px 32px;
+    margin: 4px 2px;
+`;
+
 class CoursePage extends React.Component {
+    addVideo = (e, refetchCourses, courseID) => {
+        e.preventDefault();
+        axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${this.newVideo.value}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&part=snippet`).then(({data}) => {
+            if (data.items.length > 0) {
+                var title = data.items[0].snippet.title;
+                var description = data.items[0].snippet.description;
+                var youtubeID = data.items[0].id;
+                axios.post("http://api.wellycompsci.org.uk/interns/" + courseID + '/new-video', {
+                    title,
+                    description,
+                    youtubeID
+                }).then(({data}) => {
+                    refetchCourses();
+                }).catch(error => console.error(error));
+            }
+        }).catch(error => console.error(error));
+    }
+    refreshVideo = (youtubeID, videoID, courseID, refetchCourses) => {
+        axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${youtubeID}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&part=snippet`).then(({data}) => {
+            if (data.items.length > 0) {
+                var title = data.items[0].snippet.title;
+                var description = data.items[0].snippet.description;
+                var youtubeID = data.items[0].id;
+                axios.post("http://api.wellycompsci.org.uk/interns/" + courseID + '/' + videoID, {
+                    title,
+                    description,
+                    youtubeID
+                }).then(({data}) => {
+                    refetchCourses();
+                }).catch(error => console.error(error));
+            }
+        }).catch(error => console.error(error));
+    }
+    deleteVideo = (videoID, courseID, refetchCourses) => {
+        axios.delete("http://api.wellycompsci.org.uk/interns/" + courseID + '/' + videoID).then(({data}) => {
+            refetchCourses();
+        }).catch(error => console.error(error));
+    }
     render() {
         return (<CourseContext.Consumer>
             {context => {
@@ -56,18 +145,41 @@ class CoursePage extends React.Component {
                                 {video && <Video><YouTube videoId={video.youtubeID}/><h3>{video.title}</h3>
                                     <p>{video.description}</p></Video>}
                                 <List>
-                                    {course.videos && course.videos.map((video) => <VideoLink
+                                    {course.videos && course.videos.map((video, key) => <VideoLink
                                             key={video._id}
                                             activeStyle={{fontWeight: "bold"}}
-                                            to={`/courses/${this.props.match.params.courseID}/${video._id}`}>
-                                            <li>{video.title}</li>
+                                            to={`/courses/${this.props.match.params.courseID}/${video.slug}`}
+                                            onClick={e => {
+                                                if (context.admin) {
+                                                    e.preventDefault();
+                                                }
+                                            }}
+                                        >
+                                            <li>
+                                                {video.title}
+                                                {context.admin && <React.Fragment>
+                                                    <Icon className="fas fa-sync" edit
+                                                          onClick={() => this.refreshVideo(video.youtubeID, video._id, course._id, context.refetchCourses)}></Icon>
+                                                    <Toggle>
+                                                        {({on, toggle}) => !on ?
+                                                            <Icon className="fas fa-trash" delete onClick={toggle}></Icon> :
+                                                            <Flex>Are you sure? <Icon className="fas fa-check"
+                                                                                      onClick={() => this.deleteVideo(video._id, course._id, context.refetchCourses)}></Icon><Icon
+                                                                onClick={toggle} className="fas fa-times"></Icon></Flex>}
+                                                    </Toggle>
+                                                    <Link to={`/courses/${this.props.match.params.courseID}/${video.slug}`}><Icon
+                                                        edit className="fas fa-arrow-right"></Icon></Link>
+                                                </React.Fragment>}
+                                            </li>
                                         </VideoLink>
                                     )}
-                                    <li><Form>
-                                        <Input placeholder="Video ID"/>
-                                        <Button type="submit">Add</Button>
-                                    </Form></li>
                                 </List>
+                                {context.admin &&
+                                <Form onSubmit={e => this.addVideo(e, context.refetchCourses, course._id)}>
+                                    <i className="fas fa-plus"></i>
+                                    <Input placeholder="Video ID" ref={ref => this.newVideo = ref}/>
+                                    <Button type="submit">Add</Button>
+                                </Form>}
                             </FlexContainer>
                         </div>
                     );
@@ -78,4 +190,5 @@ class CoursePage extends React.Component {
         </CourseContext.Consumer>);
     }
 }
+
 export default CoursePage;
