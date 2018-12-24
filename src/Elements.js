@@ -163,7 +163,7 @@ export const Header = ({admin}) => (
             <span>Welly</span><span>Comp</span><span>Sci</span>
         </Title>
         <Content>
-            <b>Internship Programme</b> Training Portal {admin && <strong>ADMIN</strong>}
+            <span style={{fontFamily: 'Gill Sans SB'}}>Internship Programme</span> Training Portal {admin && <strong>ADMIN</strong>}
         </Content>
         <Nav>
             <NavLink to="/" exact>Home</NavLink>

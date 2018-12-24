@@ -34,12 +34,12 @@ const CoursesWrapper = styled.div`
 
 const CourseTitle = styled.h3`
     color: white;
+    font-family: 'Gill Sans SB';
 `;
 
 const Flex = styled.div`
     display: flex;
     flex-direction: row;
-    width: 100%;
     justify-content: space-evenly;
     align-items: center;
     margin: 5px 0;
