@@ -4,8 +4,6 @@ import CoursesPage from './CoursesPage';
 import CoursePage from './CoursePage';
 import IndexPage from './IndexPage';
 import {Header, Container, Main, Footer} from "./Elements";
-import AdminCoursesPage from "./AdminCoursesPage";
-import AdminCoursePage from "./AdminCoursePage";
 import axios from "axios";
 
 export const CourseContext = React.createContext();
@@ -41,8 +39,6 @@ class App extends Component {
                                 <Route exact path="/" component={IndexPage}/>
                                 <Route exact path="/courses" component={CoursesPage}/>
                                 <Route path="/courses/:courseID/:videoID?" component={CoursePage}/>
-                                <Route path="/admin" exact component={AdminCoursesPage}/>
-                                <Route path="/admin/:courseID/:videoID?" component={AdminCoursePage}/>
                             </Switch>
                         </Main>
                         <Footer onChangeAdmin={(e) => {

@@ -117,7 +117,7 @@ class CoursesPage extends React.Component {
                         {context.loading ?
                             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/>
                             </div> :
-                            <CoursesWrapper>{context.courses.map((course, key) => (
+                            <CoursesWrapper>{green.map((course, key) => (
                                 <Course level='green'
                                         to={'/courses/' + course.slug}
                                         key={course._id}
