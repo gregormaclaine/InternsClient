@@ -99,7 +99,7 @@ class CoursePage extends React.Component {
                 var title = data.items[0].snippet.title;
                 var description = data.items[0].snippet.description;
                 var youtubeID = data.items[0].id;
-                axios.post("http://api.intern.wellycompsci.org.uk/interns/" + courseID + '/new-video', {
+                axios.post("https://api.intern.wellycompsci.org.uk/interns/" + courseID + '/new-video', {
                     title,
                     description,
                     youtubeID
@@ -115,7 +115,7 @@ class CoursePage extends React.Component {
                 var title = data.items[0].snippet.title;
                 var description = data.items[0].snippet.description;
                 var youtubeID = data.items[0].id;
-                axios.post("http://api.intern.wellycompsci.org.uk/interns/" + courseID + '/' + videoID, {
+                axios.post("https://api.intern.wellycompsci.org.uk/interns/" + courseID + '/' + videoID, {
                     title,
                     description,
                     youtubeID
@@ -126,7 +126,7 @@ class CoursePage extends React.Component {
         }).catch(error => console.error(error));
     }
     deleteVideo = (videoID, courseID, refetchCourses) => {
-        axios.delete("http://api.intern.wellycompsci.org.uk/interns/" + courseID + '/' + videoID).then(({data}) => {
+        axios.delete("https://api.intern.wellycompsci.org.uk/interns/" + courseID + '/' + videoID).then(({data}) => {
             refetchCourses();
         }).catch(error => console.error(error));
     }
