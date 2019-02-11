@@ -56,7 +56,7 @@ class CoursesPage extends React.Component {
     refreshCourse = async (course, refetchCourses) => {
         try {
             await Promise.all(course.videos.map(async (video) => {
-                return await axios.delete(`http://api.wellycompsci.org.uk/interns/${course._id}/${video._id}`);
+                return await axios.delete(`http://api.intern.wellycompsci.org.uk/interns/${course._id}/${video._id}`);
             }));
             var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${course.youtubeID}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
             if (data.items.length > 0) {
@@ -65,7 +65,7 @@ class CoursesPage extends React.Component {
                     var description = video.snippet.description;
                     var youtubeID = video.snippet.resourceId.videoId;
                     var $position = video.snippet.position;
-                    await axios.post("http://api.wellycompsci.org.uk/interns/" + course._id + '/new-video', {
+                    await axios.post("http://api.intern.wellycompsci.org.uk/interns/" + course._id + '/new-video', {
                         title,
                         description,
                         youtubeID,
@@ -80,12 +80,12 @@ class CoursesPage extends React.Component {
         }
     }
     deleteCourse = (courseID, refetchCourses) => {
-        axios.delete(`http://api.wellycompsci.org.uk/interns/${courseID}`).then(() => refetchCourses()).catch(err => console.error(err));
+        axios.delete(`http://api.intern.wellycompsci.org.uk/interns/${courseID}`).then(() => refetchCourses()).catch(err => console.error(err));
     }
     updateCoursePosition = async (position1, course1, position2, course2, refetchCourses) => {
         try{
-            await axios.post(`http://api.wellycompsci.org.uk/interns/${course1}`, {position: position2});
-            await axios.post(`http://api.wellycompsci.org.uk/interns/${course2}`, {position: position1});
+            await axios.post(`http://api.intern.wellycompsci.org.uk/interns/${course1}`, {position: position2});
+            await axios.post(`http://api.intern.wellycompsci.org.uk/interns/${course2}`, {position: position1});
             refetchCourses();
         } catch(err){
             console.error(err);

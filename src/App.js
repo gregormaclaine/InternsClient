@@ -20,7 +20,7 @@ class App extends Component {
 
     refetchCourses = () => {
         this.setState({...this.state, loading: true});
-        axios.get("http://api.wellycompsci.org.uk/interns/").then(({data}) => {
+        axios.get("http://api.intern.wellycompsci.org.uk/interns/").then(({data}) => {
             this.setState({...this.state, courses: data, loading: false});
         }).catch(error => this.setState({...this.state, error, loading: false}));
     }
