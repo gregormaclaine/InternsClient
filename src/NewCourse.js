@@ -61,7 +61,7 @@ export default class NewCourse extends React.Component {
             var _id;
             if(this.props.editCourse){
                 _id = this.props.editCourse._id;
-                await axios.post("https://api.intern.wellycompsci.org.uk/interns/" + _id, {
+                await axios.post("https://api.intern.wellycompsci.org.uk/" + _id, {
                     title: this.title.value,
                     icon: this.icon.value,
                     level: this.level.value,
@@ -70,7 +70,7 @@ export default class NewCourse extends React.Component {
                     position: this.props.editCourse.position,
                 });
             } else {
-                var {data: idData} = await axios.post("https://api.intern.wellycompsci.org.uk/interns/", {
+                var {data: idData} = await axios.post("https://api.intern.wellycompsci.org.uk/", {
                     title: this.title.value,
                     icon: this.icon.value,
                     level: this.level.value,
@@ -82,7 +82,7 @@ export default class NewCourse extends React.Component {
             }
                 if (this.props.editCourse) {
                     await Promise.all(this.props.editCourse.videos.map(async (video) => {
-                        return await axios.delete(`https://api.intern.wellycompsci.org.uk/interns/${_id}/${video._id}`);
+                        return await axios.delete(`https://api.intern.wellycompsci.org.uk/${_id}/${video._id}`);
                     }));
                 }
                 var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${this.playlistID.value}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
@@ -92,7 +92,7 @@ export default class NewCourse extends React.Component {
                         var description = video.snippet.description;
                         var youtubeID = video.snippet.resourceId.videoId;
                         var $position = video.snippet.position;
-                        await axios.post("https://api.intern.wellycompsci.org.uk/interns/" + _id + '/new-video', {
+                        await axios.post("https://api.intern.wellycompsci.org.uk/" + _id + '/new-video', {
                             title,
                             description,
                             youtubeID,

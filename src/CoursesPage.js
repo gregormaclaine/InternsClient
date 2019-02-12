@@ -80,12 +80,12 @@ class CoursesPage extends React.Component {
         }
     }
     deleteCourse = (courseID, refetchCourses) => {
-        axios.delete(`https://api.intern.wellycompsci.org.uk/interns/${courseID}`).then(() => refetchCourses()).catch(err => console.error(err));
+        axios.delete(`https://api.intern.wellycompsci.org.uk/${courseID}`).then(() => refetchCourses()).catch(err => console.error(err));
     }
     updateCoursePosition = async (position1, course1, position2, course2, refetchCourses) => {
         try{
-            await axios.post(`https://api.intern.wellycompsci.org.uk/interns/${course1}`, {position: position2});
-            await axios.post(`https://api.intern.wellycompsci.org.uk/interns/${course2}`, {position: position1});
+            await axios.post(`https://api.intern.wellycompsci.org.uk/${course1}`, {position: position2});
+            await axios.post(`https://api.intern.wellycompsci.org.uk/${course2}`, {position: position1});
             refetchCourses();
         } catch(err){
             console.error(err);
