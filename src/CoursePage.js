@@ -14,6 +14,7 @@ const Flex = styled.div`
     flex-direction: row;
     margin: 0 5px;
 `;
+
 const Icon = styled.i`
     padding: 10px;
     background-color: ${({edit}) => edit ? '#4cd137' : '#e84118'};
