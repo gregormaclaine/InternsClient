@@ -22,8 +22,10 @@ class App extends Component {
         this.setState({...this.state, loading: true});
         axios.get("https://api.intern.wellycompsci.org.uk/").then(({data}) => {
             this.setState({...this.state, courses: data, loading: false});
+            console.log(this.state.courses);
         }).catch(error => this.setState({...this.state, error, loading: false}));
     }
+
     componentDidMount() {
         this.refetchCourses();
     }

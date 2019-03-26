@@ -113,9 +113,9 @@ class CoursePage extends React.Component {
         e.preventDefault();
         axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${this.newVideo.value}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&part=snippet`).then(({data}) => {
             if (data.items.length > 0) {
-                var title = data.items[0].snippet.title;
-                var description = data.items[0].snippet.description;
-                var youtubeID = data.items[0].id;
+                let title = data.items[0].snippet.title;
+                let description = data.items[0].snippet.description;
+                let youtubeID = data.items[0].id;
                 // axios.post("https://api.intern.wellycompsci.org.uk/" + courseID + '/new-video', {
                 //     title,
                 //     description,
@@ -129,9 +129,9 @@ class CoursePage extends React.Component {
     refreshVideo = (youtubeID, videoID, courseID, refetchCourses) => {
         axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${youtubeID}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&part=snippet`).then(({data}) => {
             if (data.items.length > 0) {
-                var title = data.items[0].snippet.title;
-                var description = data.items[0].snippet.description;
-                var youtubeID = data.items[0].id;
+                let title = data.items[0].snippet.title;
+                let description = data.items[0].snippet.description;
+                let youtubeID = data.items[0].id;
                 // axios.post("https://api.intern.wellycompsci.org.uk/" + courseID + '/' + videoID, {
                 //     title,
                 //     description,

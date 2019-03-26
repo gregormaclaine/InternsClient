@@ -1,30 +1,12 @@
- import React from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import {Loader} from "./Elements";
 import {CourseContext} from "./App";
 import NewCourse from "./NewCourse";
- import axios from "axios";
- import {Toggle} from 'react-powerplug';
-
-
-const Course = styled(Link)`
-    text-decoration: none;
-    cursor: pointer;
-    color: white;
-    background-color: ${({level}) => {
-        switch (level) {
-            case 'green':
-                return '#2ecc71';
-            case 'blue':
-                return '#3498db';
-            case 'black':
-                return '#e74c3c';
-        }
-    }};
-    padding: 10px 16px;
-    text-align: center;
-`;
+import axios from "axios";
+import {Toggle} from 'react-powerplug';
+import CourseButton from "./Course"
 
 const CoursesWrapper = styled.div`
     display: grid;
@@ -32,33 +14,11 @@ const CoursesWrapper = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(186px, 1fr));
 `;
 
-const CourseTitle = styled.h3`
-    color: white;
-    font-family: 'Gill Sans SB';
-`;
-
-const Flex = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    margin: 5px 0;
-    i{
-        padding: 5px;
-        color: white;
-    }
-`;
-
-const Icon = styled.i`
-  :hover {
-    opacity: 0.6;
-  }
-`
-
 class CoursesPage extends React.Component {
     state = {
         editCourse: {}
     }
+
     refreshCourse = async (course, refetchCourses) => {
         try {
             await Promise.all(course.videos.map(async (video) => {
@@ -86,23 +46,28 @@ class CoursesPage extends React.Component {
             console.error(e);
         }
     }
+
     deleteCourse = (courseID, refetchCourses) => {
         axios.delete(`https://api.intern.wellycompsci.org.uk/${courseID}`).then(() => refetchCourses()).catch(err => console.error(err));
     }
+
     updateCoursePosition = async (position1, course1, position2, course2, refetchCourses) => {
         try{
-            // await axios.post(`https://api.intern.wellycompsci.org.uk/${course1}`, {position: position2});
-            // await axios.post(`https://api.intern.wellycompsci.org.uk/${course2}`, {position: position1});
+            await axios.post(`https://api.intern.wellycompsci.org.uk/${course1}`, {position: position2});
+            await axios.post(`https://api.intern.wellycompsci.org.uk/${course2}`, {position: position1});
             refetchCourses();
         } catch(err){
             console.error(err);
         }
     }
+
+    editCourse = c => this.setState({...this.state, editCourse: c});
+
     render() {
         return (<CourseContext.Consumer>
             {context => {
-                var green = [], blue = [], black = [];
-                context.courses.forEach((course) => {
+                let green = [], blue = [], black = [];
+                context.courses.forEach(course => {
                     switch (course.level) {
                         case 'intern':
                             green.push(course);
@@ -118,103 +83,46 @@ class CoursesPage extends React.Component {
                 return (
                     <React.Fragment>
                         <h1>Courses</h1>
+
                         <h2>Interns</h2>
                         <p>Interns, please follow these courses if you would like to join WellyCompSci as a Junior Programmer.</p>
 
-                        {context.loading ?
+                        {
+                          context.loading ?
                             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/></div> :
-                            <CoursesWrapper>{green.map((course, key) => (
-                                <Course level='green'
-                                        to={'/courses/' + course.slug}
-                                        key={course._id}
-                                        onClick={e => {if (context.admin) e.preventDefault();}}>
-                                {context.admin && <Flex>
-                                        <Icon className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></Icon>
-                                        <Icon className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></Icon>
-                                        <Icon className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== 0 ? this.updateCoursePosition(course.position, course._id, green[key - 1].position, green[key - 1]._id, context.refetchCourses) : null}></Icon>
-                                        <Icon className="fas fa-arrow-down" style={{visibility: key === green.length - 1 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== green.length - 1 ? this.updateCoursePosition(course.position, course._id, green[key + 1].position, green[key + 1]._id, context.refetchCourses) : null}></Icon>
-                                        <Toggle>
-                                            {({on, toggle}) =>
-                                                !on ? <Icon className="fas fa-trash" onClick={toggle}></Icon> : <Flex>Are you sure? <Icon className="fas fa-check" onClick={() => this.deleteCourse(course._id, context.refetchCourses)}></Icon><Icon className="fas fa-times" onClick={toggle}></Icon></Flex>
-                                            }
-                                        </Toggle>
-                                        <Link to={`/courses/${course.slug}`}><Icon className="fas fa-arrow-right"></Icon></Link>
-                                    </Flex>}
-
-                                    <i className={`${course.icon} fa-4x`}></i>
-                                    <CourseTitle>{course.title}</CourseTitle>
-                                    <i>{course.videos.length} {course.videos.length === 1 ? 'video' : 'videos'}</i>
-                                </Course>))}</CoursesWrapper>}
+                            <CoursesWrapper>
+                              {green.map((course, key) => (
+                                <CourseButton course={course} courses={green} index={key} admin={context.admin} colour="green" editCourse={this.editCourse} refetchCourses={context.refetchCourses} updateCoursePosition={this.updateCoursePosition}/>
+                              ))}
+                            </CoursesWrapper>
+                        }
 
                         <h2>Junior Programmers</h2>
-                        <p>Employees, feel free to follow these courses at your own pace, if you would like to delve
-                            deeper into our world of programming and become a Senior Programmer.</p>
-                        {context.loading ?
-                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/>
-                            </div> :
-                            <CoursesWrapper>{blue.map((course, key) => (
-                                <Course level='blue'
-                                        to={'/courses/' + course.slug}
-                                        key={course._id}
-                                        onClick={e => {
-                                            if(context.admin){
-                                                e.preventDefault();
-                                            }
+                        <p>Employees, feel free to follow these courses at your own pace, if you would like to delve deeper into our world of programming and become a Senior Programmer.</p>
 
-                                        }}>
-                                    {context.admin && <Flex>
-                                        <Icon className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></Icon>
-                                        <Icon className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></Icon>
-                                        <Icon className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== 0 ? this.updateCoursePosition(course.position, course._id, blue[key - 1].position, blue[key - 1]._id, context.refetchCourses) : null}></Icon>
-                                        <Icon className="fas fa-arrow-down" style={{visibility: key === blue.length - 1 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== blue.length - 1 ? this.updateCoursePosition(course.position, course._id, blue[key + 1].position, blue[key + 1]._id, context.refetchCourses) : null}></Icon>
-                                        <Toggle>
-                                            {({on, toggle}) =>
-                                                !on ? <Icon className="fas fa-trash" onClick={toggle}></Icon> : <Flex>Are you sure? <Icon className="fas fa-check" onClick={() => this.deleteCourse(course._id, context.refetchCourses)}></Icon><Icon className="fas fa-times" onClick={toggle}></Icon></Flex>
-                                            }
-                                        </Toggle>
-                                        <Link to={`/courses/${course.slug}`}><Icon className="fas fa-arrow-right"></Icon></Link>
-                                    </Flex>}
-                                    <i className={`${course.icon} fa-4x`}></i>
-                                    <CourseTitle>{course.title}</CourseTitle>
-                                    <i>{course.videos.length} {course.videos.length === 1 ? 'video' : 'videos'}</i>
-                                </Course>))}</CoursesWrapper>}
+                        {
+                          context.loading ?
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/></div> :
+                            <CoursesWrapper>
+                              {blue.map((course, key) => (
+                                <CourseButton course={course} courses={blue} index={key} admin={context.admin} colour="blue" editCourse={this.editCourse} refetchCourses={context.refetchCourses} updateCoursePosition={this.updateCoursePosition}/>
+                              ))}
+                            </CoursesWrapper>
+                        }
+
                         <h2>Senior Programmers</h2>
-                        <p>If you feel that you are brave enough, please try delve into these courses to put yourselves
-                            ahead of the groups.</p>
-                        {context.loading ?
-                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/>
-                            </div> :
-                            <CoursesWrapper>{black.map((course, key) => (
-                                <Course level='black'
-                                        to={'/courses/' + course.slug}
-                                        key={course._id}
-                                        onClick={e => {
-                                            if(context.admin){
-                                                e.preventDefault();
-                                            }
-                                        }}>
-                                    {context.admin && <Flex>
-                                        <Icon className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></Icon>
-                                        <Icon className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></Icon>
-                                        <Icon className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== 0 ? this.updateCoursePosition(course.position, course._id, black[key - 1].position, black[key - 1]._id, context.refetchCourses) : null}></Icon>
-                                        <Icon className="fas fa-arrow-down" style={{visibility: key === black.length - 1 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== black.length - 1 ? this.updateCoursePosition(course.position, course._id, black[key + 1].position, black[key + 1]._id, context.refetchCourses) : null}></Icon>
-                                        <Toggle>
-                                            {({on, toggle}) =>
-                                                !on ? <Icon className="fas fa-trash" onClick={toggle}></Icon> : <Flex>Are you sure? <Icon className="fas fa-check" onClick={() => this.deleteCourse(course._id, context.refetchCourses)}></Icon><Icon className="fas fa-times" onClick={toggle}></Icon></Flex>
-                                            }
-                                        </Toggle>
-                                        <Link to={`/courses/${course.slug}`}><Icon className="fas fa-arrow-right"></Icon></Link>
-                                    </Flex>}
-                                    <i className={`${course.icon} fa-4x`}></i>
-                                    <CourseTitle>{course.title}</CourseTitle>
-                                    <i>{course.videos.length} {course.videos.length === 1 ? 'video' : 'videos'}</i>
-                                </Course>))}</CoursesWrapper>}
+                        <p>If you feel that you are brave enough, please try delve into these courses to put yourselvesahead of the groups.</p>
+
+                        {
+                          context.loading ?
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/></div> :
+                            <CoursesWrapper>
+                              {black.map((course, key) => (
+                                <CourseButton course={course} courses={black} index={key} admin={context.admin} colour="black" editCourse={this.editCourse} refetchCourses={context.refetchCourses} updateCoursePosition={this.updateCoursePosition}/>
+                              ))}
+                            </CoursesWrapper>
+                        }
+
                         {!context.loading && context.admin && <NewCourse onSubmit={context.refetchCourses} length={context.courses.length} editCourse={Object.keys(this.state.editCourse).length > 0 ? this.state.editCourse : null}/>}
                     </React.Fragment>
                 );
