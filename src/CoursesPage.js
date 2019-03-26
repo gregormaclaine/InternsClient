@@ -49,6 +49,12 @@ const Flex = styled.div`
     }
 `;
 
+const Icon = styled.i`
+  :hover {
+    opacity: 0.6;
+  }
+`
+
 class CoursesPage extends React.Component {
     state = {
         editCourse: {}
@@ -94,6 +100,7 @@ class CoursesPage extends React.Component {
     render() {
         return (<CourseContext.Consumer>
             {context => {
+                context.admin = true;
                 var green = [], blue = [], black = [];
                 context.courses.forEach((course) => {
                     switch (course.level) {
@@ -115,8 +122,7 @@ class CoursesPage extends React.Component {
                         <p>Interns, please follow these courses if you would like to join WellyCompSci as a Junior
                             Programmer.</p>
                         {context.loading ?
-                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/>
-                            </div> :
+                            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/></div> :
                             <CoursesWrapper>{green.map((course, key) => (
                                 <Course level='green'
                                         to={'/courses/' + course.slug}
@@ -128,18 +134,18 @@ class CoursesPage extends React.Component {
                                         }}
                                 >
                                     {context.admin && <Flex>
-                                        <i className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></i>
-                                        <i className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></i>
-                                        <i className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== 0 ? this.updateCoursePosition(course.position, course._id, green[key - 1].position, green[key - 1]._id, context.refetchCourses) : null}></i>
-                                        <i className="fas fa-arrow-down" style={{visibility: key === green.length - 1 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== green.length - 1 ? this.updateCoursePosition(course.position, course._id, green[key + 1].position, green[key + 1]._id, context.refetchCourses) : null}></i>
+                                        <Icon className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></Icon>
+                                        <Icon className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></Icon>
+                                        <Icon className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
+                                           onClick={() => key !== 0 ? this.updateCoursePosition(course.position, course._id, green[key - 1].position, green[key - 1]._id, context.refetchCourses) : null}></Icon>
+                                        <Icon className="fas fa-arrow-down" style={{visibility: key === green.length - 1 ? 'hidden' : 'visible'}}
+                                           onClick={() => key !== green.length - 1 ? this.updateCoursePosition(course.position, course._id, green[key + 1].position, green[key + 1]._id, context.refetchCourses) : null}></Icon>
                                         <Toggle>
                                             {({on, toggle}) =>
-                                                !on ? <i className="fas fa-trash" onClick={toggle}></i> : <Flex>Are you sure? <i className="fas fa-check" onClick={() => this.deleteCourse(course._id, context.refetchCourses)}></i><i className="fas fa-times" onClick={toggle}></i></Flex>
+                                                !on ? <Icon className="fas fa-trash" onClick={toggle}></Icon> : <Flex>Are you sure? <Icon className="fas fa-check" onClick={() => this.deleteCourse(course._id, context.refetchCourses)}></Icon><Icon className="fas fa-times" onClick={toggle}></Icon></Flex>
                                             }
                                         </Toggle>
-                                        <Link to={`/courses/${course.slug}`}><i className="fas fa-arrow-right"></i></Link>
+                                        <Link to={`/courses/${course.slug}`}><Icon className="fas fa-arrow-right"></Icon></Link>
                                     </Flex>}
                                     <i className={`${course.icon} fa-4x`}></i>
                                     <CourseTitle>{course.title}</CourseTitle>
@@ -162,18 +168,18 @@ class CoursesPage extends React.Component {
 
                                         }}>
                                     {context.admin && <Flex>
-                                        <i className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></i>
-                                        <i className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></i>
-                                        <i className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== 0 ? this.updateCoursePosition(course.position, course._id, blue[key - 1].position, blue[key - 1]._id, context.refetchCourses) : null}></i>
-                                        <i className="fas fa-arrow-down" style={{visibility: key === blue.length - 1 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== blue.length - 1 ? this.updateCoursePosition(course.position, course._id, blue[key + 1].position, blue[key + 1]._id, context.refetchCourses) : null}></i>
+                                        <Icon className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></Icon>
+                                        <Icon className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></Icon>
+                                        <Icon className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
+                                           onClick={() => key !== 0 ? this.updateCoursePosition(course.position, course._id, blue[key - 1].position, blue[key - 1]._id, context.refetchCourses) : null}></Icon>
+                                        <Icon className="fas fa-arrow-down" style={{visibility: key === blue.length - 1 ? 'hidden' : 'visible'}}
+                                           onClick={() => key !== blue.length - 1 ? this.updateCoursePosition(course.position, course._id, blue[key + 1].position, blue[key + 1]._id, context.refetchCourses) : null}></Icon>
                                         <Toggle>
                                             {({on, toggle}) =>
-                                                !on ? <i className="fas fa-trash" onClick={toggle}></i> : <Flex>Are you sure? <i className="fas fa-check" onClick={() => this.deleteCourse(course._id, context.refetchCourses)}></i><i className="fas fa-times" onClick={toggle}></i></Flex>
+                                                !on ? <Icon className="fas fa-trash" onClick={toggle}></Icon> : <Flex>Are you sure? <Icon className="fas fa-check" onClick={() => this.deleteCourse(course._id, context.refetchCourses)}></Icon><Icon className="fas fa-times" onClick={toggle}></Icon></Flex>
                                             }
                                         </Toggle>
-                                        <Link to={`/courses/${course.slug}`}><i className="fas fa-arrow-right"></i></Link>
+                                        <Link to={`/courses/${course.slug}`}><Icon className="fas fa-arrow-right"></Icon></Link>
                                     </Flex>}
                                     <i className={`${course.icon} fa-4x`}></i>
                                     <CourseTitle>{course.title}</CourseTitle>
@@ -195,18 +201,18 @@ class CoursesPage extends React.Component {
                                             }
                                         }}>
                                     {context.admin && <Flex>
-                                        <i className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></i>
-                                        <i className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></i>
-                                        <i className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== 0 ? this.updateCoursePosition(course.position, course._id, black[key - 1].position, black[key - 1]._id, context.refetchCourses) : null}></i>
-                                        <i className="fas fa-arrow-down" style={{visibility: key === black.length - 1 ? 'hidden' : 'visible'}}
-                                           onClick={() => key !== black.length - 1 ? this.updateCoursePosition(course.position, course._id, black[key + 1].position, black[key + 1]._id, context.refetchCourses) : null}></i>
+                                        <Icon className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></Icon>
+                                        <Icon className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></Icon>
+                                        <Icon className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
+                                           onClick={() => key !== 0 ? this.updateCoursePosition(course.position, course._id, black[key - 1].position, black[key - 1]._id, context.refetchCourses) : null}></Icon>
+                                        <Icon className="fas fa-arrow-down" style={{visibility: key === black.length - 1 ? 'hidden' : 'visible'}}
+                                           onClick={() => key !== black.length - 1 ? this.updateCoursePosition(course.position, course._id, black[key + 1].position, black[key + 1]._id, context.refetchCourses) : null}></Icon>
                                         <Toggle>
                                             {({on, toggle}) =>
-                                                !on ? <i className="fas fa-trash" onClick={toggle}></i> : <Flex>Are you sure? <i className="fas fa-check" onClick={() => this.deleteCourse(course._id, context.refetchCourses)}></i><i className="fas fa-times" onClick={toggle}></i></Flex>
+                                                !on ? <Icon className="fas fa-trash" onClick={toggle}></Icon> : <Flex>Are you sure? <Icon className="fas fa-check" onClick={() => this.deleteCourse(course._id, context.refetchCourses)}></Icon><Icon className="fas fa-times" onClick={toggle}></Icon></Flex>
                                             }
                                         </Toggle>
-                                        <Link to={`/courses/${course.slug}`}><i className="fas fa-arrow-right"></i></Link>
+                                        <Link to={`/courses/${course.slug}`}><Icon className="fas fa-arrow-right"></Icon></Link>
                                     </Flex>}
                                     <i className={`${course.icon} fa-4x`}></i>
                                     <CourseTitle>{course.title}</CourseTitle>

@@ -18,9 +18,10 @@ const Icon = styled.i`
     padding: 10px;
     background-color: ${({edit}) => edit ? '#4cd137' : '#e84118'};
     color: white;
+    height: 100%;
     &:hover{
         background-color: ${({edit}) => edit ? '#44bd32' : '#c23616'}
-    }  
+    }
     ${({disabled}) => disabled ? 'pointer-events: none; background-color: gray;' : ''}
 `;
 
@@ -38,6 +39,20 @@ const Video = styled.div`
     flex-direction: column;
 `;
 
+const VideoItem = styled.li`
+    position: relative;
+`;
+
+const VideoOptions = styled.div`
+    display: inline-flex;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    alignItems: center;
+    justifyContent: center;
+`;
+
 const List = styled.ol`
     flex-grow: 1;
     li {
@@ -48,7 +63,7 @@ const List = styled.ol`
         border-bottom: 1px solid #ddd;
         &:hover{
             background-color: #E7E7E7;
-        }    
+        }
     }
 `;
 const FlexContainer = styled.div`
@@ -133,6 +148,7 @@ class CoursePage extends React.Component {
     render() {
         return (<CourseContext.Consumer>
             {context => {
+                context.admin = true;
                 if (context.loading) return <Loader/>;
                 try {
                     var course = context.courses.filter((elem) => elem.slug === this.props.match.params.courseID)[0];
@@ -155,22 +171,22 @@ class CoursePage extends React.Component {
                                                 }
                                             }}
                                         >
-                                            <li>
+                                            <VideoItem>
                                                 {video.title}
-                                                {context.admin && <React.Fragment>
+                                                {context.admin && <VideoOptions>
                                                     <Icon className="fas fa-sync" edit
                                                           onClick={() => this.refreshVideo(video.youtubeID, video._id, course._id, context.refetchCourses)}></Icon>
                                                     <Toggle>
                                                         {({on, toggle}) => !on ?
                                                             <Icon className="fas fa-trash" delete onClick={toggle}></Icon> :
-                                                            <Flex>Are you sure? <Icon className="fas fa-check"
+                                                            <Flex styled={{display: "inline-flex"}}>Are you sure? <Icon className="fas fa-check"
                                                                                       onClick={() => this.deleteVideo(video._id, course._id, context.refetchCourses)}></Icon><Icon
                                                                 onClick={toggle} className="fas fa-times"></Icon></Flex>}
                                                     </Toggle>
                                                     <Link to={`/courses/${this.props.match.params.courseID}/${video.slug}`}><Icon
                                                         edit className="fas fa-arrow-right"></Icon></Link>
-                                                </React.Fragment>}
-                                            </li>
+                                                </VideoOptions>}
+                                            </VideoItem>
                                         </VideoLink>
                                     )}
                                 </List>
