@@ -62,7 +62,8 @@ class CoursesPage extends React.Component {
     refreshCourse = async (course, refetchCourses) => {
         try {
             await Promise.all(course.videos.map(async (video) => {
-                return await axios.delete(`http://api.intern.wellycompsci.org.uk/interns/${course._id}/${video._id}`);
+              return;
+              // return await axios.delete(`http://api.intern.wellycompsci.org.uk/interns/${course._id}/${video._id}`);
             }));
             var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${course.youtubeID}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
             if (data.items.length > 0) {
@@ -71,12 +72,12 @@ class CoursesPage extends React.Component {
                     var description = video.snippet.description;
                     var youtubeID = video.snippet.resourceId.videoId;
                     var $position = video.snippet.position;
-                    await axios.post("https://api.intern.wellycompsci.org.uk/interns/" + course._id + '/new-video', {
-                        title,
-                        description,
-                        youtubeID,
-                        $position
-                    });
+                    // await axios.post("https://api.intern.wellycompsci.org.uk/interns/" + course._id + '/new-video', {
+                    //     title,
+                    //     description,
+                    //     youtubeID,
+                    //     $position
+                    // });
                 }));
             }
             refetchCourses();
@@ -90,8 +91,8 @@ class CoursesPage extends React.Component {
     }
     updateCoursePosition = async (position1, course1, position2, course2, refetchCourses) => {
         try{
-            await axios.post(`https://api.intern.wellycompsci.org.uk/${course1}`, {position: position2});
-            await axios.post(`https://api.intern.wellycompsci.org.uk/${course2}`, {position: position1});
+            // await axios.post(`https://api.intern.wellycompsci.org.uk/${course1}`, {position: position2});
+            // await axios.post(`https://api.intern.wellycompsci.org.uk/${course2}`, {position: position1});
             refetchCourses();
         } catch(err){
             console.error(err);
@@ -100,7 +101,6 @@ class CoursesPage extends React.Component {
     render() {
         return (<CourseContext.Consumer>
             {context => {
-                context.admin = true;
                 var green = [], blue = [], black = [];
                 context.courses.forEach((course) => {
                     switch (course.level) {
@@ -119,21 +119,16 @@ class CoursesPage extends React.Component {
                     <React.Fragment>
                         <h1>Courses</h1>
                         <h2>Interns</h2>
-                        <p>Interns, please follow these courses if you would like to join WellyCompSci as a Junior
-                            Programmer.</p>
+                        <p>Interns, please follow these courses if you would like to join WellyCompSci as a Junior Programmer.</p>
+
                         {context.loading ?
                             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}><Loader/></div> :
                             <CoursesWrapper>{green.map((course, key) => (
                                 <Course level='green'
                                         to={'/courses/' + course.slug}
                                         key={course._id}
-                                        onClick={e => {
-                                            if(context.admin){
-                                                e.preventDefault();
-                                            }
-                                        }}
-                                >
-                                    {context.admin && <Flex>
+                                        onClick={e => {if (context.admin) e.preventDefault();}}>
+                                {context.admin && <Flex>
                                         <Icon className="fas fa-edit" onClick={() => this.setState({...this.state, editCourse: course})}></Icon>
                                         <Icon className="fas fa-sync" onClick={() => this.refreshCourse(course, context.refetchCourses)}></Icon>
                                         <Icon className="fas fa-arrow-up" style={{visibility: key === 0 ? 'hidden' : 'visible'}}
@@ -147,10 +142,12 @@ class CoursesPage extends React.Component {
                                         </Toggle>
                                         <Link to={`/courses/${course.slug}`}><Icon className="fas fa-arrow-right"></Icon></Link>
                                     </Flex>}
+
                                     <i className={`${course.icon} fa-4x`}></i>
                                     <CourseTitle>{course.title}</CourseTitle>
                                     <i>{course.videos.length} {course.videos.length === 1 ? 'video' : 'videos'}</i>
                                 </Course>))}</CoursesWrapper>}
+
                         <h2>Junior Programmers</h2>
                         <p>Employees, feel free to follow these courses at your own pace, if you would like to delve
                             deeper into our world of programming and become a Senior Programmer.</p>

@@ -12,7 +12,8 @@ const Flex = styled.div`
     align-items: center;
     justify-content: flex-end;
     flex-direction: row;
-    margin: 0 5px;
+    background-color: #eee;
+    padding: 5px;
 `;
 
 const Icon = styled.i`
@@ -115,13 +116,13 @@ class CoursePage extends React.Component {
                 var title = data.items[0].snippet.title;
                 var description = data.items[0].snippet.description;
                 var youtubeID = data.items[0].id;
-                axios.post("https://api.intern.wellycompsci.org.uk/" + courseID + '/new-video', {
-                    title,
-                    description,
-                    youtubeID
-                }).then(({data}) => {
-                    refetchCourses();
-                }).catch(error => console.error(error));
+                // axios.post("https://api.intern.wellycompsci.org.uk/" + courseID + '/new-video', {
+                //     title,
+                //     description,
+                //     youtubeID
+                // }).then(({data}) => {
+                //     refetchCourses();
+                // }).catch(error => console.error(error));
             }
         }).catch(error => console.error(error));
     }
@@ -131,13 +132,13 @@ class CoursePage extends React.Component {
                 var title = data.items[0].snippet.title;
                 var description = data.items[0].snippet.description;
                 var youtubeID = data.items[0].id;
-                axios.post("https://api.intern.wellycompsci.org.uk/" + courseID + '/' + videoID, {
-                    title,
-                    description,
-                    youtubeID
-                }).then(({data}) => {
-                    refetchCourses();
-                }).catch(error => console.error(error));
+                // axios.post("https://api.intern.wellycompsci.org.uk/" + courseID + '/' + videoID, {
+                //     title,
+                //     description,
+                //     youtubeID
+                // }).then(({data}) => {
+                //     refetchCourses();
+                // }).catch(error => console.error(error));
             }
         }).catch(error => console.error(error));
     }
@@ -149,7 +150,6 @@ class CoursePage extends React.Component {
     render() {
         return (<CourseContext.Consumer>
             {context => {
-                context.admin = true;
                 if (context.loading) return <Loader/>;
                 try {
                     var course = context.courses.filter((elem) => elem.slug === this.props.match.params.courseID)[0];
@@ -180,7 +180,7 @@ class CoursePage extends React.Component {
                                                     <Toggle>
                                                         {({on, toggle}) => !on ?
                                                             <Icon className="fas fa-trash" delete onClick={toggle}></Icon> :
-                                                            <Flex styled={{display: "inline-flex"}}>Are you sure? <Icon className="fas fa-check"
+                                                            <Flex styled={{display: "inline-flex"}}>Are you sure?<Icon className="fas fa-check"
                                                                                       onClick={() => this.deleteVideo(video._id, course._id, context.refetchCourses)}></Icon><Icon
                                                                 onClick={toggle} className="fas fa-times"></Icon></Flex>}
                                                     </Toggle>
