@@ -19,7 +19,7 @@ const CourseLink = styled(Link)`
   margin-top: 20px;
   width: 30%;
   height: 20%;
-  padding: 20px;
+  padding: 15px;
   text-align: center;
   text-decoration: none;
   color: white;
@@ -53,7 +53,7 @@ const IndexPage = () => (
         </p>
         <p><i>Will, Arjun &amp; Gregor</i></p>
 
-        <CoursesBox><h1>Begin Your Internship</h1><CourseLink to="/courses">Courses</CourseLink></CoursesBox>
+        <CoursesBox><h1>Begin Your Internship</h1><CourseLink to="/courses"><h2>Courses</h2></CourseLink></CoursesBox>
         <ContactBox href="mailto:wellycompsci@wellingtoncollege.org.uk"><h1>Book Your Interview</h1></ContactBox>
     </React.Fragment>
 );

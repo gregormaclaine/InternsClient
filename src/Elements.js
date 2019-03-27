@@ -185,7 +185,7 @@ export const Header = ({admin}) => (
         <Nav>
             <NavLink to="/" exact>Home</NavLink>
             <NavLink to="/courses">Courses</NavLink>
-            <NavLink to="/profile">Profile</NavLink>
+            <NavLink to="/newcourses">New Courses</NavLink>
         </Nav>
     </HeaderWrapper>
 
