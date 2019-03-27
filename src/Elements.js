@@ -80,17 +80,21 @@ const LoaderWrapper = styled.div`
 
 const HeaderWrapper = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
     background-color: #ccc;
-    flex-grow: 0;
-    flex-wrap: wrap;
+    flex-grow: 1;
+    flex-direction: column;
+    max-height: 100px;
+
+    div{
+      display: flex;
+      align-items: center;
+    }
 `;
 
 const Title = styled(Link)`
     background-color: #333;
     text-decoration: none;
-    height: 100%;
+    height: 60px;
     padding: 10px 20px 7px 20px;
       font-family: Rockwell, "Courier Bold", "Courier", "Georgia", Times, "Times New Roman", serif;
       font-weight: bold;
@@ -122,30 +126,41 @@ const Content = styled.div`
 
 const Nav = styled.nav`
     margin-right: 5px;
-    .active{
-      background-color: #333;
-      color: white;
-    }
-    a{
-    text-decoration: none;
-    text-align: center;
-    padding: 10px 16px;
-    height: 100%;
-    &:hover{
-      background-color: #333;
-      color: white;
-    }
-  }
-      display: flex;
+    display: flex;
     flex-wrap: nowrap;
     align-items: center;
     justify-content: stretch;
-    @media only screen and (max-width: 880px) {
-    flex-grow: 1;
-    margin: 0;
-    a{
-      flex-grow: 1;
+    height: 40px;
+    width: 100%;
+
+    a:nth-child(3n+1){
+      background-color: #f49712;
     }
+    a:nth-child(3n+2){
+      background-color: #a6d6c9;
+    }
+    a:nth-child(3n+0){
+      background-color: #f7d117;
+    }
+    /* a.active{
+      background-color: #333;
+      color: white;
+    } */
+    a{
+      color: black;
+      text-decoration: none;
+      text-align: center;
+      padding: 10px 16px;
+      height: 100%;
+      flex-grow: 1;
+      &:hover{
+        background-color: #333;
+        color: white;
+      }
+    }
+    @media only screen and (max-width: 880px) {
+      flex-grow: 1;
+      margin: 0;
   }
 `;
 
@@ -159,15 +174,18 @@ export const Loader = (props) => (
 
 export const Header = ({admin}) => (
     <HeaderWrapper>
-        <Title to="/">
+        <div>
+          <Title to="/">
             <span>Welly</span><span>Comp</span><span>Sci</span>
-        </Title>
-        <Content>
-            <span style={{fontFamily: 'Gill Sans SB'}}>Internship Programme</span> Training Portal {admin && <strong>ADMIN</strong>}
-        </Content>
+          </Title>
+          <Content>
+            <span style={{fontFamily: 'Gill Sans SB', marginRight: "6px"}}>Internship Programme</span>Training Portal {admin && <strong style={{flexGrow: "1", textAlign: "center"}}>ADMIN</strong>}
+          </Content>
+        </div>
         <Nav>
             <NavLink to="/" exact>Home</NavLink>
             <NavLink to="/courses">Courses</NavLink>
+            <NavLink to="/profile">Profile</NavLink>
         </Nav>
     </HeaderWrapper>
 
