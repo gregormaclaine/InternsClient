@@ -26,7 +26,7 @@ const Icon = styled.i`
   :hover {
     opacity: 0.6;
   }
-`
+`;
 
 const Flex = styled.div`
     display: flex;
@@ -34,7 +34,7 @@ const Flex = styled.div`
     justify-content: space-evenly;
     align-items: center;
     margin: 5px 0;
-    i{
+    i {
         padding: 5px;
         color: white;
     }

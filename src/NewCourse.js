@@ -8,10 +8,13 @@ const Form = styled.form`
     switch (level) {
         case 'intern':
             return '#2ecc71';
+            break;
         case 'junior':
             return '#3498db';
+            break;
         case 'senior':
             return '#e74c3c';
+            break;
         default:
             return '#333';
     }
@@ -26,6 +29,7 @@ const Input = styled.input`
     margin: 8px 0;
     width: 100%;
 `;
+
 const Select = styled.select`
     padding: 12px 20px;
     border: none;
@@ -110,18 +114,17 @@ export default class NewCourse extends React.Component {
     render() {
         return (
             <Form onSubmit={this.newCourse} level={this.state.level}>
-                <h3>{this.props.editCourse ? 'Edit Course' : 'New Course'}</h3>
-                <Select placeholder="Level" ref={ref => this.level = ref}
-                        defaultValue={this.props.editCourse ? this.props.editCourse.level : ''} onChange={e => this.setState({level: e.target.value})}>
-                    <option value="intern">Intern</option>
-                    <option value="junior">Junior Programmer</option>
-                    <option value="senior">Senior Programmer</option>
-                </Select>
-                <Input defaultValue={this.props.editCourse ? this.props.editCourse.icon : ''} ref={ref => this.icon = ref} placeholder="Icon"/>
-                <Input defaultValue={this.props.editCourse ? this.props.editCourse.title : ''} ref={ref => this.title = ref} placeholder="Title"/>
-                <TextArea defaultValue={this.props.editCourse ? this.props.editCourse.description : ''} placeholder="Description" ref={ref => this.description = ref}/>
-                <Input defaultValue={this.props.editCourse ? this.props.editCourse.youtubeID : ''} ref={ref => this.playlistID = ref} placeholder="Playlist ID"/>
-                <Button type="submit">Submit</Button>
+              <h3 onClick={()=>console.log(this.state.level)}>{this.props.editCourse ? 'Edit Course' : 'New Course'}</h3>
+              <Select placeholder="Level" ref={ref => this.level = ref}
+                defaultValue={this.props.editCourse ? this.props.editCourse.level : ''} onChange={e => this.setState({level: e.target.value})}>
+                <option value="intern">Intern</option>
+                <option value="junior">Junior Programmer</option>
+                <option value="senior">Senior Programmer</option>
+              </Select>
+              <Input defaultValue={this.props.editCourse ? this.props.editCourse.icon : ''} ref={ref => this.icon = ref} placeholder="Icon"/>
+              <Input defaultValue={this.props.editCourse ? this.props.editCourse.title : ''} ref={ref => this.title = ref} placeholder="Title"/>
+              <TextArea defaultValue={this.props.editCourse ? this.props.editCourse.description : ''} placeholder="Description" ref={ref => this.description = ref}/>              <Input defaultValue={this.props.editCourse ? this.props.editCourse.youtubeID : ''} ref={ref => this.playlistID = ref} placeholder="Playlist ID"/>
+              <Button type="submit">Submit</Button>
             </Form>
         );
     }
