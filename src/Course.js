@@ -40,6 +40,24 @@ const Flex = styled.div`
     }
 `;
 
+const Check = styled.div`
+    display: grid;
+    padding-top: 5px;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    grid-template-areas: "text text" "yes no";
+    background-color: ${({level}) => {
+        switch (level) {
+            case 'green':
+                return '#15B358';
+            case 'blue':
+                return '#1B7FC2';
+            case 'black':
+                return '#CE3323';
+        }
+    }};
+`;
+
 const CourseTitle = styled.h3`
     color: white;
     font-family: 'Gill Sans SB';
@@ -103,7 +121,7 @@ class CourseButton extends React.Component {
               onClick={() => index !== courses.length - 1 ? this.handlePositionUpdate(1) : null}></Icon>
             <Toggle>
             {({on, toggle}) =>
-              !on ? <Icon className="fas fa-trash" onClick={toggle}></Icon> : <Flex>Are you sure? <Icon className="fas fa-check" onClick={this.deleteCourse}></Icon><Icon className="fas fa-times" onClick={toggle}></Icon></Flex>
+              !on ? <Icon className="fas fa-trash" onClick={toggle}></Icon> : <Check level={colour}><span style={{"gridArea":"text"}}>Are you sure?</span><Icon className="fas fa-check" style={{"gridArea":"yes"}} onClick={this.deleteCourse}></Icon><Icon className="fas fa-times" style={{"gridArea":"no"}} onClick={toggle}></Icon></Check>
             }
             </Toggle>
             <Link to={`/courses/${course.slug}`}><Icon className="fas fa-arrow-right"></Icon></Link>
