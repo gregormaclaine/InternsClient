@@ -111,7 +111,7 @@ export default class NewCourse extends React.Component {
     render() {
         return (
             <Form onSubmit={this.newCourse} level={this.state.level}>
-              <h3 onClick={()=>console.log(this.state.level)}>{this.props.editCourse ? 'Edit Course' : 'New Course'}</h3>
+              <h3>{this.props.editCourse ? 'Edit Course' : 'New Course'}</h3>
               <Select placeholder="Level" ref={ref => this.level = ref}
                 defaultValue={this.props.editCourse ? this.props.editCourse.level : ''} onChange={e => this.setState({level: e.target.value})}>
                 <option value="intern">Intern</option>

@@ -174,10 +174,11 @@ export const Header = ({admin}) => (
 );
 
 const FooterWrapper = styled.footer`
-  color: #aaa;
-      background-color: #f1f1f1;
+    color: #aaa;
+    background-color: #f1f1f1;
     font-size: 0.5rem;
     padding: 10px;
+    text-align: center;
 `;
 
 export const Footer = ({onChangeAdmin}) => (
@@ -195,7 +196,7 @@ export const Footer = ({onChangeAdmin}) => (
 export const Main = styled.main`
     max-width: 960px;
     margin: auto;
-    flex-grow: 1;   
+    flex-grow: 1;
 `;
 
 export const Container = styled.div`
@@ -204,4 +205,3 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: stretch;
 `;
-

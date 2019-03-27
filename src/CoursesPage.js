@@ -110,7 +110,7 @@ class CoursesPage extends React.Component {
                             </CoursesWrapper>
                         }
 
-                        <h2 onClick={() => {console.log(this.state.editCourse)}}> Senior Programmers</h2>
+                        <h2>Senior Programmers</h2>
                         <p>If you feel that you are brave enough, please try delve into these courses to put yourselves ahead of the groups.</p>
 
                         {
