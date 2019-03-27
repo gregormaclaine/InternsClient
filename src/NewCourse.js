@@ -8,13 +8,10 @@ const Form = styled.form`
     switch (level) {
         case 'intern':
             return '#2ecc71';
-            break;
         case 'junior':
             return '#3498db';
-            break;
         case 'senior':
             return '#e74c3c';
-            break;
         default:
             return '#333';
     }

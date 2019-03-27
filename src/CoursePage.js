@@ -113,9 +113,9 @@ class CoursePage extends React.Component {
         e.preventDefault();
         axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${this.newVideo.value}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&part=snippet`).then(({data}) => {
             if (data.items.length > 0) {
-                let title = data.items[0].snippet.title;
-                let description = data.items[0].snippet.description;
-                let youtubeID = data.items[0].id;
+                // let title = data.items[0].snippet.title;
+                // let description = data.items[0].snippet.description;
+                // let youtubeID = data.items[0].id;
                 // axios.post("https://api.intern.wellycompsci.org.uk/" + courseID + '/new-video', {
                 //     title,
                 //     description,
@@ -129,9 +129,9 @@ class CoursePage extends React.Component {
     refreshVideo = (youtubeID, videoID, courseID, refetchCourses) => {
         axios.get(`https://www.googleapis.com/youtube/v3/videos?id=${youtubeID}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&part=snippet`).then(({data}) => {
             if (data.items.length > 0) {
-                let title = data.items[0].snippet.title;
-                let description = data.items[0].snippet.description;
-                let youtubeID = data.items[0].id;
+                // let title = data.items[0].snippet.title;
+                // let description = data.items[0].snippet.description;
+                // let youtubeID = data.items[0].id;
                 // axios.post("https://api.intern.wellycompsci.org.uk/" + courseID + '/' + videoID, {
                 //     title,
                 //     description,
@@ -155,7 +155,7 @@ class CoursePage extends React.Component {
                     var course = context.courses.filter((elem) => elem.slug === this.props.match.params.courseID)[0];
                     var video = this.props.match.params.videoID ? course.videos.filter((elem) => elem.slug === this.props.match.params.videoID)[0] : false;
                     return (
-                        <div>
+                        <div style={{"width": "960px"}}>
                             <h1>{course.title}</h1>
                             <p>{course.description}</p>
                             <FlexContainer>

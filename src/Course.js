@@ -16,6 +16,8 @@ const Course = styled(Link)`
                 return '#3498db';
             case 'black':
                 return '#e74c3c';
+            default:
+                return '#333';
         }
     }};
     padding: 10px 16px;
@@ -54,6 +56,8 @@ const Check = styled.div`
                 return '#1B7FC2';
             case 'black':
                 return '#CE3323';
+            default:
+                return '#333';
         }
     }};
 `;
@@ -77,10 +81,10 @@ class CourseButton extends React.Component {
           var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${course.youtubeID}&index=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
           if (data.items.length > 0) {
               await Promise.all(data.items.map(async (video) => {
-                  var title = video.snippet.title;
-                  var description = video.snippet.description;
-                  var youtubeID = video.snippet.resourceId.videoId;
-                  var $position = video.snippet.position;
+                  // var title = video.snippet.title;
+                  // var description = video.snippet.description;
+                  // var youtubeID = video.snippet.resourceId.videoId;
+                  // var $position = video.snippet.position;
                   // await axios.post("https://api.intern.wellycompsci.org.uk/interns/" + course._id + '/new-video', {
                   //     title,
                   //     description,

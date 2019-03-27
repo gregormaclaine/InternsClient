@@ -1,11 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import {Loader} from "./Elements";
 import {CourseContext} from "./App";
 import NewCourse from "./NewCourse";
 import axios from "axios";
-import {Toggle} from 'react-powerplug';
 import CourseButton from "./Course"
 
 const CoursesWrapper = styled.div`
@@ -28,10 +26,10 @@ class CoursesPage extends React.Component {
             var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${course.youtubeID}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
             if (data.items.length > 0) {
                 await Promise.all(data.items.map(async (video) => {
-                    var title = video.snippet.title;
-                    var description = video.snippet.description;
-                    var youtubeID = video.snippet.resourceId.videoId;
-                    var $position = video.snippet.position;
+                    // var title = video.snippet.title;
+                    // var description = video.snippet.description;
+                    // var youtubeID = video.snippet.resourceId.videoId;
+                    // var $position = video.snippet.position;
                     // await axios.post("https://api.intern.wellycompsci.org.uk/interns/" + course._id + '/new-video', {
                     //     title,
                     //     description,
@@ -77,6 +75,8 @@ class CoursesPage extends React.Component {
                             break;
                         case 'senior':
                             black.push(course);
+                            break;
+                        default:
                             break;
                     }
                 });
