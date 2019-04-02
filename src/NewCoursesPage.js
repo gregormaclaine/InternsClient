@@ -1,20 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
-import {Loader} from "./Elements";
 import {CourseContext} from "./App";
-import NewCourse from "./NewCourse";
-import axios from "axios";
-import CourseButton from "./Course"
-
-const CoursesWrapper = styled.div`
-    display: grid;
-    grid-gap: 10px;
-    grid-template-columns: repeat(auto-fill, minmax(186px, 1fr));
-`;
 
 const CourseLevel = styled(Link)`
   display: flex;
+  // justify-content: center;
+  // align-items: center;
+  text-decoration: none;
   position: relative;
   width: 75%;
   margin: 0px auto 30px auto;
@@ -47,7 +40,6 @@ const CourseLevel = styled(Link)`
   }
   ::before{
     content: "${({level}) => {return level;}}";
-    /* content: "Intern"; */
     position: absolute;
     top: 50%;
     transform: translate(0px, -50%);
@@ -67,57 +59,13 @@ const CourseLevel = styled(Link)`
     font-weight: 900;
     color: white;
   }
+  i{
+    margin: 10px;
+    color: white;
+  }
 `;
 
 class NewCoursesPage extends React.Component {
-    state = {
-        editCourse: {}
-    }
-
-    refreshCourse = async (course, refetchCourses) => {
-        try {
-            await Promise.all(course.videos.map(async (video) => {
-              return;
-              // return await axios.delete(`http://api.intern.wellycompsci.org.uk/interns/${course._id}/${video._id}`);
-            }));
-            var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${course.youtubeID}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
-            if (data.items.length > 0) {
-                await Promise.all(data.items.map(async (video) => {
-                    // var title = video.snippet.title;
-                    // var description = video.snippet.description;
-                    // var youtubeID = video.snippet.resourceId.videoId;
-                    // var $position = video.snippet.position;
-                    // await axios.post("https://api.intern.wellycompsci.org.uk/interns/" + course._id + '/new-video', {
-                    //     title,
-                    //     description,
-                    //     youtubeID,
-                    //     $position
-                    // });
-                }));
-            }
-            refetchCourses();
-        }
-        catch (e) {
-            console.error(e);
-        }
-    }
-
-    deleteCourse = (courseID, refetchCourses) => {
-        axios.delete(`https://api.intern.wellycompsci.org.uk/${courseID}`).then(() => refetchCourses()).catch(err => console.error(err));
-    }
-
-    updateCoursePosition = async (position1, course1, position2, course2, refetchCourses) => {
-        try{
-            await axios.post(`https://api.intern.wellycompsci.org.uk/${course1}`, {position: position2});
-            await axios.post(`https://api.intern.wellycompsci.org.uk/${course2}`, {position: position1});
-            refetchCourses();
-        } catch(err){
-            console.error(err);
-        }
-    }
-
-    editCourse = c => this.setState({...this.state, editCourse: c});
-
     render() {
         return (<CourseContext.Consumer>
             {context => {
@@ -139,23 +87,23 @@ class NewCoursesPage extends React.Component {
                 });
                 return (
                     <React.Fragment>
-                      <div style={{width: "960px", textAlign: "center"}}>
-                        <h1>Courses</h1>
-                        {console.log(green)}
+                      <div style={{width: "960px", paddingTop: "50px"}}>
 
                         <CourseLevel level="Intern" colour="green" to="/">
-                          <div>{green.map((course, key) => (<i style={{margin: "10px", color:"white"}} className={`${course.icon} fa-6x`}></i>))}</div>
+                          {(green.length !== 0) ? green.map((course, key) => (<i className={`${course.icon} fa-6x`} />)) :
+                          (<i className={`fas fa-question fa-6x`} />)}
                         </CourseLevel>
 
                         <CourseLevel level="Junior" colour="blue" to="/">
-                          <div>{blue.map((course, key) => (<i style={{margin: "10px", color:"white"}} className={`${course.icon} fa-6x`}></i>))}</div>
+                          {(blue.length !== 0) ? blue.map((course, key) => (<i className={`${course.icon} fa-6x`} />)) :
+                          (<i className={`fas fa-question fa-6x`} />)}
                         </CourseLevel>
 
                         <CourseLevel level="Senior" colour="black" to="/">
-                          <div>{(black.length !== 0) ? black.map((course, key) => (<i style={{margin: "10px", color:"white"}} className={`${course.icon} fa-6x`}></i>)) :
-                          (<i style={{margin: "10px", color:"white"}} className={`fas fa-question fa-6x`}></i>)}</div>
+                          {(black.length !== 0) ? black.map((course, key) => (<i className={`${course.icon} fa-6x`} />)) :
+                          (<i className={`fas fa-question fa-6x`} />)}
                         </CourseLevel>
-                        </div>
+                      </div>
                     </React.Fragment>
                 );
             }}
