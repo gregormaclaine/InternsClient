@@ -3,15 +3,15 @@ import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 import {CourseContext} from "./App";
 
-const CourseLevel = styled(Link)`
-  display: flex;
-  // justify-content: center;
-  // align-items: center;
-  text-decoration: none;
+const CourseLevel = styled.div`
   position: relative;
+  display: grid;
+  grid-template-areas: ". . ." ". . ." ". . courses";
+  grid-template-rows: 1fr 1fr 2fr;
+  grid-template-columns: 1fr 1fr 3fr;
   width: 75%;
   margin: 0px auto 30px auto;
-  padding: 10% 0px 0px 30%;
+  text-decoration: none;
   background-color: ${({colour}) => {
       switch (colour) {
           case 'green':
@@ -24,7 +24,7 @@ const CourseLevel = styled(Link)`
               return '#333';
       }
   }};
-  :hover{
+  /* :hover {
     background-color: ${({colour}) => {
         switch (colour) {
             case 'green':
@@ -37,8 +37,8 @@ const CourseLevel = styled(Link)`
                 return '#222';
         }
     }};
-  }
-  ::before{
+  } */
+  ::before {
     content: "${({level}) => {return level;}}";
     position: absolute;
     top: 50%;
@@ -48,7 +48,7 @@ const CourseLevel = styled(Link)`
     font-weight: 900;
     font-size: 3.5em;
   }
-  ::after{
+  ::after {
     content: "You Will Learn:";
     position: absolute;
     top: 15%;
@@ -59,9 +59,20 @@ const CourseLevel = styled(Link)`
     font-weight: 900;
     color: white;
   }
-  i{
+  i {
     margin: 10px;
     color: white;
+  }
+`;
+
+const Courses = styled.div`
+  display: flex;
+  align-items: center;
+  grid-area: courses;
+
+  i.course-link:hover {
+    opacity: 0.8;
+    cursor: pointer;
   }
 `;
 
@@ -86,25 +97,28 @@ class NewCoursesPage extends React.Component {
                     }
                 });
                 return (
-                    <React.Fragment>
-                      <div style={{width: "960px", paddingTop: "50px"}}>
-
-                        <CourseLevel level="Intern" colour="green" to="/">
-                          {(green.length !== 0) ? green.map((course, key) => (<i className={`${course.icon} fa-6x`} />)) :
+                    <div style={{width: "960px", paddingTop: "50px"}}>
+                      <CourseLevel level="Intern" colour="green">
+                        <Courses>
+                          {(green.length !== 0) ? green.map((course, key) => (<i className={`${course.icon} fa-6x course-link`} />)) :
                           (<i className={`fas fa-question fa-6x`} />)}
-                        </CourseLevel>
+                        </Courses>
+                      </CourseLevel>
 
-                        <CourseLevel level="Junior" colour="blue" to="/">
-                          {(blue.length !== 0) ? blue.map((course, key) => (<i className={`${course.icon} fa-6x`} />)) :
+                      <CourseLevel level="Junior" colour="blue">
+                        <Courses>
+                          {(blue.length !== 0) ? blue.map((course, key) => (<i className={`${course.icon} fa-6x course-link`} />)) :
                           (<i className={`fas fa-question fa-6x`} />)}
-                        </CourseLevel>
+                        </Courses>
+                      </CourseLevel>
 
-                        <CourseLevel level="Senior" colour="black" to="/">
-                          {(black.length !== 0) ? black.map((course, key) => (<i className={`${course.icon} fa-6x`} />)) :
+                      <CourseLevel level="Senior" colour="black">
+                        <Courses>
+                          {(black.length !== 0) ? black.map((course, key) => (<i className={`${course.icon} fa-6x course-link`} />)) :
                           (<i className={`fas fa-question fa-6x`} />)}
-                        </CourseLevel>
-                      </div>
-                    </React.Fragment>
+                        </Courses>
+                      </CourseLevel>
+                    </div>
                 );
             }}
         </CourseContext.Consumer>);
