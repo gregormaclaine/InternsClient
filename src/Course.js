@@ -76,21 +76,21 @@ class CourseButton extends React.Component {
       try {
           await Promise.all(course.videos.map(async (video) => {
             return;
-            // return await axios.delete(`http://api.intern.wellycompsci.org.uk/interns/${course._id}/${video._id}`);
+            return await axios.delete(`http://api.intern.wellycompsci.org.uk/interns/${course._id}/${video._id}`);
           }));
           var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${course.youtubeID}&index=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
           if (data.items.length > 0) {
               await Promise.all(data.items.map(async (video) => {
-                  // var title = video.snippet.title;
-                  // var description = video.snippet.description;
-                  // var youtubeID = video.snippet.resourceId.videoId;
-                  // var $position = video.snippet.position;
-                  // await axios.post("https://api.intern.wellycompsci.org.uk/interns/" + course._id + '/new-video', {
-                  //     title,
-                  //     description,
-                  //     youtubeID,
-                  //     $position
-                  // });
+                  var title = video.snippet.title;
+                  var description = video.snippet.description;
+                  var youtubeID = video.snippet.resourceId.videoId;
+                  var $position = video.snippet.position;
+                  await axios.post("https://api.intern.wellycompsci.org.uk/interns/" + course._id + '/new-video', {
+                      title,
+                      description,
+                      youtubeID,
+                      $position
+                  });
               }));
           }
           this.props.refetchCourses();

@@ -24,20 +24,6 @@ const CourseLevel = styled.div`
               return '#333';
       }
   }};
-  /* :hover {
-    background-color: ${({colour}) => {
-        switch (colour) {
-            case 'green':
-                return '#15B358';
-            case 'blue':
-                return '#1B7FC2';
-            case 'black':
-                return '#CE3323';
-            default:
-                return '#222';
-        }
-    }};
-  } */
   ::before {
     content: "${({level}) => {return level;}}";
     position: absolute;
