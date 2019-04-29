@@ -20,7 +20,6 @@ class CoursesPage extends React.Component {
     refreshCourse = async (course, refetchCourses) => {
         try {
             await Promise.all(course.videos.map(async (video) => {
-              return;
               return await axios.delete(`http://api.intern.wellycompsci.org.uk/interns/${course._id}/${video._id}`);
             }));
             var {data} = await axios.get(`https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${course.youtubeID}&key=AIzaSyAoBVRLwkm3DV9pNEArUh_hXMstpDCl2CE&maxResults=50&part=snippet`);
