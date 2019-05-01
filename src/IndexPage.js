@@ -2,46 +2,36 @@ import React from 'react';
 import styled from 'styled-components';
 import {Link} from 'react-router-dom';
 
-const CoursesBox = styled.div`
-  margin: 0px auto;
-  width: 75%;
+const Buttons = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: #2ecc71;
-  padding: 50px 10px;
-  color: white;
+  height: 20vh;
+  margin-top: 5vh;
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 40%;
+    height: 100%;
+    border-radius: 10px;
+    margin: auto;
+
+    color: white;
+    text-decoration: none;
+  }
 `;
 
-const CourseLink = styled(Link)`
-  background-color: #3498db;
-  margin-top: 20px;
-  width: 30%;
-  height: 20%;
-  padding: 15px;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  border-radius: 5px;
+const CoursesBox = styled(Link)`
+  background-color: #2ecc71;
   :hover{
-    background-color: #1B7FC2;
+    background-color: #15B358;
   }
 `;
 
 const ContactBox = styled.a`
-  margin: 0px auto;
-  margin-top: 50px;
-  width: 75%;
-  padding: 60px 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  color: white;
-  background-color: #e74c3c;
+  background-color: #3498db;
   :hover{
-    background-color: #CE3323;
+    background-color: #1B7FC2;
   }
 `;
 
@@ -53,8 +43,11 @@ const IndexPage = () => (
         </p>
         <p><i>Will, Arjun &amp; Gregor</i></p>
 
-        <CoursesBox><h1>Begin Your Internship</h1><CourseLink to="/courses"><h2>Courses</h2></CourseLink></CoursesBox>
-        <ContactBox href="mailto:wellycompsci@wellingtoncollege.org.uk"><h1>Book Your Interview</h1></ContactBox>
+        <Buttons>
+          <CoursesBox to="/newcourses"><h1>Begin Your Internship</h1></CoursesBox>
+          <ContactBox href="mailto:wellycompsci@wellingtoncollege.org.uk"><h1>Book Your Interview</h1></ContactBox>
+        </Buttons>
+
     </React.Fragment>
 );
 
