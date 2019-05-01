@@ -13,17 +13,9 @@ const CourseLevel = styled.div`
   margin: 0px auto 30px auto;
   text-decoration: none;
   background-color: ${({colour}) => {
-      switch (colour) {
-          case 'green':
-              return '#2ecc71';
-          case 'blue':
-              return '#3498db';
-          case 'black':
-              return '#e74c3c';
-          default:
-              return '#333';
-      }
-  }};
+    let colours = {"green": "#2ecc71", "blue" : "#3498db", "black" : "#e74c3c"};
+    return (colour in colours) ? colours[colour] : "#333";
+    }};
   ::before {
     content: "${({level}) => {return level;}}";
     position: absolute;
@@ -97,7 +89,7 @@ class NewCoursesPage extends React.Component {
     render() {
         return (<CourseContext.Consumer>
             {context => {
-                let courses = {"intern" : [], "junior" : [], "senior" : []}
+                let courses = {"intern" : [], "junior" : [], "senior" : []};
                 context.courses.forEach(course => {
                     if (course.level in courses) {
                       courses[course.level].push(course);
