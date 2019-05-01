@@ -33,6 +33,7 @@ const CourseLevel = styled.div`
     color: white;
     font-weight: 900;
     font-size: 3.5em;
+    cursor: text;
   }
   ::after {
     content: "You Will Learn:";
@@ -45,6 +46,7 @@ const CourseLevel = styled.div`
     letter-spacing: 0.1em
     font-weight: 900;
     color: white;
+    cursor: text;
   }
   i {
     margin: 10px;
@@ -95,20 +97,10 @@ class NewCoursesPage extends React.Component {
     render() {
         return (<CourseContext.Consumer>
             {context => {
-                let green = [], blue = [], black = [];
+                let courses = {"intern" : [], "junior" : [], "senior" : []}
                 context.courses.forEach(course => {
-                    switch (course.level) {
-                        case 'intern':
-                            green.push(course);
-                            break;
-                        case 'junior':
-                            blue.push(course);
-                            break;
-                        case 'senior':
-                            black.push(course);
-                            break;
-                        default:
-                            break;
+                    if (course.level in courses) {
+                      courses[course.level].push(course);
                     }
                 });
                 return (
@@ -116,7 +108,7 @@ class NewCoursesPage extends React.Component {
                       <CourseLevel level="Intern" colour="green">
                         <p className="desc">Please follow these courses if you would like to join WellyCompSci as a Junior Programmer.</p>
                         <Courses>
-                          {(green.length !== 0) ? green.map((course, key) => (<CourseLink name={course.title} to={'/courses/' + course.slug}><i className={`${course.icon} fa-6x`} /></CourseLink>)) :
+                          {(courses["intern"].length !== 0) ? courses["intern"].map((course, key) => (<CourseLink name={course.title} to={'/courses/' + course.slug}><i className={`${course.icon} fa-6x`} /></CourseLink>)) :
                           (<i className={`fas fa-question fa-6x`} />)}
                         </Courses>
                       </CourseLevel>
@@ -124,7 +116,7 @@ class NewCoursesPage extends React.Component {
                       <CourseLevel level="Junior" colour="blue">
                         <p className="desc">Feel free to follow these courses at your own pace, if you would like to delve deeper into our world of programming and become a Senior Programmer.</p>
                         <Courses>
-                          {(blue.length !== 0) ? blue.map((course, key) => (<CourseLink name={course.title} to={'/courses/' + course.slug}><i className={`${course.icon} fa-6x`} /></CourseLink>)) :
+                          {(courses["junior"].length !== 0) ? courses["junior"].map((course, key) => (<CourseLink name={course.title} to={'/courses/' + course.slug}><i className={`${course.icon} fa-6x`} /></CourseLink>)) :
                           (<i className={`fas fa-question fa-6x`} />)}
                         </Courses>
                       </CourseLevel>
@@ -132,7 +124,7 @@ class NewCoursesPage extends React.Component {
                       <CourseLevel level="Senior" colour="black">
                         <p className="desc">If you feel that you are brave enough, please try delve into these courses to put yourselves ahead of the groups.</p>
                         <Courses>
-                          {(black.length !== 0) ? black.map((course, key) => (<CourseLink name={course.title} to={'/courses/' + course.slug}><i className={`${course.icon} fa-6x`} /></CourseLink>)) :
+                          {(courses["senior"].length !== 0) ? courses["senior"].map((course, key) => (<CourseLink name={course.title} to={'/courses/' + course.slug}><i className={`${course.icon} fa-6x`} /></CourseLink>)) :
                           (<i className={`fas fa-question fa-6x`} />)}
                         </Courses>
                       </CourseLevel>
