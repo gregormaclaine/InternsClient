@@ -2,7 +2,7 @@ import React from 'react';
 import {CourseContext} from "./App";
 import NewCourseButton from "./NewCourseBlock";
 
-class NewCoursesPage extends React.Component {
+class CoursesPage extends React.Component {
     render() {
         return (<CourseContext.Consumer>
             {context => {
@@ -31,4 +31,4 @@ class NewCoursesPage extends React.Component {
     }
 }
 
-export default NewCoursesPage;
+export default CoursesPage;
