@@ -44,7 +44,7 @@ const IndexPage = () => (
         <p><i>Will, Arjun &amp; Gregor</i></p>
 
         <Buttons>
-          <CoursesBox to="/newcourses"><h1>Begin Your Internship</h1></CoursesBox>
+          <CoursesBox to="/courses"><h1>Begin Your Internship</h1></CoursesBox>
           <ContactBox href="mailto:wellycompsci@wellingtoncollege.org.uk"><h1>Book Your Interview</h1></ContactBox>
         </Buttons>
 
