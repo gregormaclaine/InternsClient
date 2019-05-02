@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import CoursesPage from './CoursesPage';
 import CoursePage from './CoursePage';
 import IndexPage from './IndexPage';
+import FAQPage from './FaqPage';
 import {Header, Container, Main, Footer} from "./Elements";
 import axios from "axios";
 
@@ -39,7 +40,7 @@ class App extends Component {
                             <Switch>
                                 <Route exact path="/" component={IndexPage}/>
                                 <Route exact path="/courses" component={CoursesPage}/>
-                                <Route exact path="/faq" component={IndexPage}/>
+                                <Route exact path="/faq" component={FAQPage}/>
                                 <Route path="/courses/:courseID/:videoID?" component={CoursePage}/>
                             </Switch>
                         </Main>
