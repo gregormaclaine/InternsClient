@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import CoursesPage from './CoursesPage';
-import NewCoursesPage from './NewCoursesPage';
 import CoursePage from './CoursePage';
 import IndexPage from './IndexPage';
 import {Header, Container, Main, Footer} from "./Elements";
@@ -40,7 +39,7 @@ class App extends Component {
                             <Switch>
                                 <Route exact path="/" component={IndexPage}/>
                                 <Route exact path="/courses" component={CoursesPage}/>
-                                <Route exact path="/newcourses" component={NewCoursesPage}/>
+                                <Route exact path="/faq" component={IndexPage}/>
                                 <Route path="/courses/:courseID/:videoID?" component={CoursePage}/>
                             </Switch>
                         </Main>
