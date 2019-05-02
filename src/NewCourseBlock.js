@@ -99,7 +99,7 @@ const Overlay = styled.span`
   align-items: center;
 
   background-color: black;
-  opacity: 0.925;
+  opacity: 0.92;
 `;
 
 const Help = styled.i`
@@ -107,11 +107,11 @@ const Help = styled.i`
   top: 0px;
   left: 0px;
   color: white;
-  margin: 10px;
   cursor: pointer;
-  :hover {
-    opacity: 0.8;
+  :hover::before {
+    opacity: 0.7;
   }
+  padding: 5px;
 `;
 
 class NewCourseButton extends React.Component {
@@ -121,7 +121,7 @@ class NewCourseButton extends React.Component {
         {({on, toggle}) =>
           <React.Fragment>
             <CourseLevel colour={this.props.colour} background={on}>
-              <Help className={`fas fa-question`} onClick={toggle}/>
+              <Help className={`far fa-question-circle fa-2x`} onClick={toggle}/>
               <BlockTitle>{this.props.level}</BlockTitle>
               <YouWillLearn>You Will Learn:</YouWillLearn>
               <Courses>
