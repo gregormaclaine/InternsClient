@@ -9,14 +9,11 @@ import axios from "axios";
 
 export const CourseContext = React.createContext();
 
-const HASH = 'HelloWorld1';
-
 class App extends Component {
     state = {
         courses: [],
         error: null,
-        loading: false,
-        admin: false
+        loading: false
     }
 
     refetchCourses = () => {
@@ -35,7 +32,7 @@ class App extends Component {
             <CourseContext.Provider value={{...this.state, refetchCourses: this.refetchCourses}}>
                 <Router>
                     <Container>
-                        <Header admin={this.state.admin}/>
+                        <Header />
                         <Main>
                             <Switch>
                                 <Route exact path="/" component={IndexPage}/>
@@ -44,9 +41,7 @@ class App extends Component {
                                 <Route path="/courses/:courseID/:videoID?" component={CoursePage}/>
                             </Switch>
                         </Main>
-                        <Footer onChangeAdmin={(e) => {
-                            this.setState({...this.state, admin: e.target.value === HASH})
-                        }}/>
+                        <Footer />
                     </Container>
                 </Router>
             </CourseContext.Provider>

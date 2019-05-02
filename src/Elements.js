@@ -1,7 +1,6 @@
 import React from 'react';
 import styled, {keyframes} from 'styled-components';
 import {Link, NavLink} from 'react-router-dom';
-import {Toggle} from 'react-powerplug';
 
 const anim1 = keyframes`
   0% {
@@ -179,7 +178,7 @@ export const Header = ({admin}) => (
             <span>Welly</span><span>Comp</span><span>Sci</span>
           </Title>
           <Content>
-            <span style={{fontFamily: 'Gill Sans SB', marginRight: "6px"}}>Internship Programme</span>Training Portal {admin && <strong style={{flexGrow: "1", textAlign: "center"}}>ADMIN</strong>}
+            <span style={{fontFamily: 'Gill Sans SB', marginRight: "6px"}}>Internship Programme</span>Training Portal
           </Content>
         </div>
         <Nav>
@@ -200,16 +199,10 @@ const FooterWrapper = styled.footer`
 `;
 
 export const Footer = ({onChangeAdmin}) => (
-    <Toggle>
-        {({on, toggle}) =>
-            <FooterWrapper>
-                <span>WellyCompSci is a student project. Examples might be simplified for high school level learning. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. While using this site, you agree to have read and accepted our terms of use, cookie and privacy policy. Copyright 2017-2018. All Rights Reserved. Powered by Mann Power.</span>
-                <span onClick={toggle} style={{cursor: 'pointer'}}> Edit</span>
-                {on && <input onChange={onChangeAdmin} style={{fontSize: '0.5rem', marginLeft: 5}} />}
-            </FooterWrapper>
-        }
-    </Toggle>
-)
+    <FooterWrapper>
+        <span>WellyCompSci is a student project. Examples might be simplified for high school level learning. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. While using this site, you agree to have read and accepted our terms of use, cookie and privacy policy. Copyright 2017-2018. All Rights Reserved. Powered by Mann Power.</span>
+    </FooterWrapper>
+);
 
 export const Main = styled.main`
     max-width: 960px;
