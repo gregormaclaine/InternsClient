@@ -12,6 +12,9 @@ const CourseLevel = styled.div`
   width: 75%;
   margin: 0px auto 30px auto;
   text-decoration: none;
+  box-shadow: 0 8px 6px -6px black;
+  border-radius: 5px;
+  overflow: hidden;
   background-color: ${({colour}) => {
     let colours = {"green": "#2ecc71", "blue" : "#3498db", "black" : "#e74c3c"};
     return (colour in colours) ? colours[colour] : "#333";
@@ -106,6 +109,9 @@ const Help = styled.i`
   color: white;
   margin: 10px;
   cursor: pointer;
+  :hover {
+    opacity: 0.8;
+  }
 `;
 
 class NewCourseButton extends React.Component {
