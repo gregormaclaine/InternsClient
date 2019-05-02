@@ -1,6 +1,6 @@
 import React from 'react';
 import {CourseContext} from "./App";
-import NewCourseButton from "./NewCourseBlock";
+import Level from "./Level";
 
 class CoursesPage extends React.Component {
     render() {
@@ -15,14 +15,14 @@ class CoursesPage extends React.Component {
                 return (
                     <div style={{width: "960px", paddingTop: "50px", textAlign: "center"}}>
 
-                      <NewCourseButton level="Intern" colour="green" courses={courses["intern"]}
-                                       desc="Please follow these courses if you would like to join WellyCompSci as a Junior Programmer." />
+                      <Level level="Intern" colour="green" courses={courses["intern"]}
+                             desc="Please follow these courses if you would like to join WellyCompSci as a Junior Programmer." />
 
-                      <NewCourseButton level="Junior" colour="blue" courses={courses["junior"]}
-                                       desc="Feel free to follow these courses at your own pace, if you would like to delve deeper into our world of programming and become a Senior Programmer." />
+                      <Level level="Junior" colour="blue" courses={courses["junior"]}
+                             desc="Feel free to follow these courses at your own pace, if you would like to delve deeper into our world of programming and become a Senior Programmer." />
 
-                      <NewCourseButton level="Senior" colour="black" courses={courses["senior"]}
-                                       desc="If you feel that you are brave enough, please try delve into these courses to put yourselves ahead of the groups." />
+                      <Level level="Senior" colour="black" courses={courses["senior"]}
+                             desc="If you feel that you are brave enough, please try delve into these courses to put yourselves ahead of the groups." />
 
                     </div>
                 );

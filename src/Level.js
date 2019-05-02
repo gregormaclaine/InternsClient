@@ -114,7 +114,7 @@ const Help = styled.i`
   padding: 5px;
 `;
 
-class NewCourseButton extends React.Component {
+class Level extends React.Component {
   render() {
     return (
       <Toggle>
@@ -137,4 +137,4 @@ class NewCourseButton extends React.Component {
   }
 }
 
-export default NewCourseButton;
+export default Level;
