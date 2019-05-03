@@ -13,6 +13,9 @@ const CourseLevel = styled.div`
   margin: 0px auto 30px auto;
   text-decoration: none;
   box-shadow: 0 8px 6px -6px black;
+  :hover {
+    box-shadow: 0 12px 9px -9px black;
+  }
   border-radius: 5px;
   overflow: hidden;
   background-color: ${({colour}) => {
