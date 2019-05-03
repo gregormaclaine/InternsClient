@@ -68,6 +68,7 @@ const Courses = styled.div`
 `;
 
 const CourseLink = styled(Link)`
+  text-decoration: none;
   :hover {
     ::after {
       display: block;
