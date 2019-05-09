@@ -1,6 +1,6 @@
 import React from 'react';
-import {CourseContext} from "./App";
-import Level from "./Level";
+import {CourseContext} from "../App";
+import Level from "../components/Level";
 
 class CoursesPage extends React.Component {
     render() {

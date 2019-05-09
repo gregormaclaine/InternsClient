@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import YouTube from 'react-youtube';
 import {NavLink} from 'react-router-dom';
-import {CourseContext} from './App';
-import {Loader} from "./Elements";
+import {CourseContext} from '../App';
+import {Loader} from "../components/Elements";
 
 const VideoLink = styled(NavLink)`
     text-decoration: none;
