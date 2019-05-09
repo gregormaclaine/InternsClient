@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import CoursesPage from './pages/CoursesPage';
-import CoursePage from './pages/CoursePage';
-import IndexPage from './pages/IndexPage';
-import FAQPage from './pages/FaqPage';
-import {Header, Container, Main, Footer} from "./components/Elements";
 import axios from "axios";
+import {Header, Container, Main, Footer} from "./components/Elements";
+import IndexPage from './pages/Home';
+import CoursesPage from './pages/Levels';
+import CoursePage from './pages/Course';
+import FAQPage from './pages/FAQ';
 
 export const CourseContext = React.createContext();
 
