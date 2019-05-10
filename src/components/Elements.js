@@ -198,7 +198,7 @@ const FooterWrapper = styled.footer`
     text-align: center;
 `;
 
-export const Footer = ({onChangeAdmin}) => (
+export const Footer = () => (
     <FooterWrapper>
         <span>WellyCompSci is a student project. Examples might be simplified for high school level learning. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. While using this site, you agree to have read and accepted our terms of use, cookie and privacy policy. Copyright 2017-2018. All Rights Reserved. Powered by Mann Power.</span>
     </FooterWrapper>
